@@ -1,24 +1,14 @@
 <script lang="tsx">
 import * as vts from 'vue-tsx-support';
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from "nuxt-property-decorator";
 import { VAutocomplete, VBtn } from 'vuetify-tsx';
+import { IActions, IState } from "@/store_modules/search/employer";
+import { ActionTree } from '@/store_modules/store_helper';
 
 @Component
 class Select extends Vue {
-  public groups = [
-    { label: '営業', value: '1' },
-    { label: '開発', value: '2' },
-    { label: '総務', value: '3' },
-  ];
-
-  public branches = [
-    { label: '第一営業部', value: '1' },
-    { label: '第二営業部', value: '2' },
-    { label: 'ソフトウェア開発部', value: '3' },
-    { label: '研究開発部', value: '4' },
-    { label: 'インフラ', value: '5' },
-    { label: '総務部', value: '6' },
-  ];
+  @Prop({ required: true, type: Object }) state!: IState;
+  @Prop({ required: true, type: Object }) actions!: ActionTree<IActions>;
 
   render() {
     // TODO: 氏名，性別の検索
@@ -26,13 +16,13 @@ class Select extends Vue {
       <div>
         <VAutocomplete
           label="グループ"
-          items={this.groups}
+          items={this.state.groups}
           item-text="label"
           item-value="value"
         />
         <VAutocomplete
           label="部署"
-          items={this.branches}
+          items={this.state.branches}
           item-text="label"
           item-value="value"
         />
@@ -42,7 +32,7 @@ class Select extends Vue {
   }
 }
 
-// TODO: ofTypeの型引数に与える予定
-type Props = Pick<Select, 'groups'>;
-export default vts.ofType().convert(Select);
+type Props = Pick<Select, 'state' | 'actions'>;
+export default vts.ofType<Props>().convert(Select);
+
 </script>
