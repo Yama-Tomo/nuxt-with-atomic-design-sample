@@ -24,7 +24,8 @@
       "dom.iterable",
       "scripthost"
     ],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vuetify"]
   },
   "exclude": [
     ".nuxt",  
