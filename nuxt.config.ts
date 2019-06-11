@@ -20,6 +20,18 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     ],
   },
+  babel: {
+    plugins: [
+      [
+        'import',
+        {
+          libraryName: 'vuetify-tsx',
+          libraryDirectory: 'lib',
+          camel2DashComponentName: false,
+        },
+      ],
+    ],
+  },
   loading: { color: '#3B8070' },
   build: {
     extractCSS: !isDev,
@@ -30,10 +42,9 @@ export default {
   },
   modules: [
     '@nuxtjs/axios',
+    ['@nuxtjs/vuetify', { treeShake: true, css: true }],
   ],
-  plugins: [
-    '~/plugins/axios_cookie_proxy.ts',
-  ],
+  plugins: ['~/plugins/axios_cookie_proxy.ts'],
   axios: {
     host,
     port,
