@@ -1,8 +1,9 @@
 <script lang="tsx">
 import * as vts from 'vue-tsx-support';
-import { Component, Prop, Vue } from "nuxt-property-decorator";
-import { VAutocomplete, VBtn } from 'vuetify-tsx';
-import { IActions, IState } from "@/store_modules/search/employer";
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import { VBtn } from 'vuetify-tsx';
+import VAutocomplete from '@/types/vuetify/VAutocomplete';
+import { IActions, IState, ChooseDataElement } from '@/store_modules/search/employer';
 import { ActionTree } from '@/store_modules/store_helper';
 
 @Component
@@ -19,12 +20,16 @@ class Select extends Vue {
           items={this.state.groups}
           item-text="label"
           item-value="value"
+          return-object
+          onChange={(e: ChooseDataElement) => { this.actions.setConditions({ key: 'group', val: e }) } }
         />
         <VAutocomplete
           label="部署"
           items={this.state.branches}
           item-text="label"
           item-value="value"
+          return-object
+          onChange={(e: ChooseDataElement) => { this.actions.setConditions({ key: 'branch', val: e }) } }
         />
         <VBtn color="primary">Search</VBtn>
       </div>
@@ -34,5 +39,4 @@ class Select extends Vue {
 
 type Props = Pick<Select, 'state' | 'actions'>;
 export default vts.ofType<Props>().convert(Select);
-
 </script>
