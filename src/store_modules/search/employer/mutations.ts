@@ -12,7 +12,10 @@ export type setConditionArg = Exclude<
 
 export interface IMutations {
   resetState: undefined;
-  setChooseData: { key: 'groups' | 'branches'; val: ChooseDataElement[] };
+  setChooseData: {
+    key: 'groups' | 'branches' | 'sex' | 'countries';
+    val: ChooseDataElement[];
+  };
   setConditions: setConditionArg;
 }
 

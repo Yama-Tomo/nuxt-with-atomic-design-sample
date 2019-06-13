@@ -6,23 +6,23 @@ export type ChooseDataElement = {
 export interface IState {
   groups: ChooseDataElement[];
   branches: ChooseDataElement[];
+  sex: ChooseDataElement[];
+  countries: ChooseDataElement[];
   conditions: {
     group?: ChooseDataElement;
     branch?: ChooseDataElement;
     name?: string;
-    sex?: string;
+    sex?: ChooseDataElement;
+    country?: ChooseDataElement;
   };
 }
 
 const defaultState = (): IState => ({
   groups: [],
   branches: [],
-  conditions: {
-    group: undefined,
-    branch: undefined,
-    name: undefined,
-    sex: undefined,
-  },
+  sex: [],
+  countries: [],
+  conditions: {},
 });
 
 export default defaultState;
