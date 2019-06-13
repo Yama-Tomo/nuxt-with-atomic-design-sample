@@ -6,10 +6,29 @@ import VAutocomplete from '@/types/vuetify/VAutocomplete';
 import { IActions, IState, ChooseDataElement } from '@/store_modules/search/employer';
 import { ActionTree } from '@/store_modules/store_helper';
 
+type Conditions = {
+  group?: () => void;
+  branch?: () => void;
+  name?: () => void;
+  sex?: () => void;
+  country?: () => void;
+}
+
 @Component
 class EmployerSearchBox extends Vue {
   @Prop({ required: true, type: Object }) state!: IState;
   @Prop({ required: true, type: Object }) actions!: ActionTree<IActions>;
+  applyConditionFunctions: Conditions = {};
+
+  onClick() {
+    (Object.keys(this.applyConditionFunctions) as (keyof Conditions)[]).forEach(k => {
+      const func = this.applyConditionFunctions[k];
+      if (func) {
+        func();
+      }
+      this.applyConditionFunctions = {};
+    })
+  }
 
   render() {
     return (
@@ -20,7 +39,9 @@ class EmployerSearchBox extends Vue {
           item-text="label"
           item-value="value"
           return-object
-          onChange={(e: ChooseDataElement) => { this.actions.setConditions({ key: 'group', val: e }) } }
+          onChange={(e: ChooseDataElement) =>
+            this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e })
+          }
         />
         <VAutocomplete
           label="部署"
@@ -28,12 +49,15 @@ class EmployerSearchBox extends Vue {
           item-text="label"
           item-value="value"
           return-object
-          onChange={(e: ChooseDataElement) => { this.actions.setConditions({ key: 'branch', val: e }) } }
+          onChange={(e: ChooseDataElement) =>
+            this.applyConditionFunctions.branch = () => this.actions.setConditions({ key: 'branch', val: e })
+          }
         />
         <VTextField
           label="氏名"
-          onChange={(e: string) => { this.actions.setConditions({ key: 'name', val: e }) }}
-          onInput={(e: string) => { this.actions.setConditions({ key: 'name', val: e }) }}
+          onChange={(e: string) =>
+            this.applyConditionFunctions.name = () => this.actions.setConditions({ key: 'name', val: e })
+          }
         />
         <VAutocomplete
           label="性別"
@@ -41,7 +65,9 @@ class EmployerSearchBox extends Vue {
           item-text="label"
           item-value="value"
           return-object
-          onChange={(e: ChooseDataElement) => { this.actions.setConditions({ key: 'sex', val: e }) } }
+          onChange={(e: ChooseDataElement) =>
+            this.applyConditionFunctions.sex = () => this.actions.setConditions({ key: 'sex', val: e })
+          }
         />
         <VAutocomplete
           label="国籍"
@@ -49,9 +75,11 @@ class EmployerSearchBox extends Vue {
           item-text="label"
           item-value="value"
           return-object
-          onChange={(e: ChooseDataElement) => { this.actions.setConditions({ key: 'country', val: e }) } }
+          onChange={(e: ChooseDataElement) =>
+            this.applyConditionFunctions.country = () => this.actions.setConditions({ key: 'country', val: e })
+          }
         />
-        <VBtn color="primary">Search</VBtn>
+        <VBtn color="primary" onClick={this.onClick}>Search</VBtn>
       </div>
     );
   }
