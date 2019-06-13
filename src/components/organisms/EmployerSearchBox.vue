@@ -7,7 +7,7 @@ import { IActions, IState, ChooseDataElement } from '@/store_modules/search/empl
 import { ActionTree } from '@/store_modules/store_helper';
 
 @Component
-class Select extends Vue {
+class EmployerSearchBox extends Vue {
   @Prop({ required: true, type: Object }) state!: IState;
   @Prop({ required: true, type: Object }) actions!: ActionTree<IActions>;
 
@@ -57,6 +57,6 @@ class Select extends Vue {
   }
 }
 
-type Props = Pick<Select, 'state' | 'actions'>;
-export default vts.ofType<Props>().convert(Select);
+type Props = Pick<EmployerSearchBox, 'state' | 'actions'>;
+export default vts.ofType<Props>().convert(EmployerSearchBox);
 </script>
