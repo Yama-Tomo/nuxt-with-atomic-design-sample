@@ -2,12 +2,12 @@
 import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { VDataTable } from 'vuetify-tsx';
-import { IActions, IState } from '@/store_modules/search/employer';
+import { IActions, IState } from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
-import { headers, pagination } from './functions/employer_search_result_set';
+import { headers, pagination } from './functions/employee_search_result_set';
 
 @Component
-class EmployerSearchResultSet extends Vue {
+class EmployeeSearchResultSet extends Vue {
   @Prop({ required: true, type: Object }) state!: IState;
   @Prop({ required: true, type: Object }) actions!: ActionTree<IActions>;
   // TODO: ドメインオブジェクトを実装したらanyを変更する
@@ -53,6 +53,6 @@ class EmployerSearchResultSet extends Vue {
   }
 }
 
-type Props = Pick<EmployerSearchResultSet, 'state' | 'actions' | 'dataSets'>;
-export default vts.ofType<Props>().convert(EmployerSearchResultSet);
+type Props = Pick<EmployeeSearchResultSet, 'state' | 'actions' | 'dataSets'>;
+export default vts.ofType<Props>().convert(EmployeeSearchResultSet);
 </script>

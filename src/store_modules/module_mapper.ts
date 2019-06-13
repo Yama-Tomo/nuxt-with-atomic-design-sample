@@ -1,4 +1,4 @@
-import * as SearchEmployer from './search/employer';
+import * as SearchEmployee from './search/employee';
 
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
 export namespace modules.search.employer {
@@ -6,9 +6,9 @@ export namespace modules.search.employer {
 }
 
 export interface StateMapper {
-  [modules.search.employer.conditions]: SearchEmployer.IState;
+  [modules.search.employer.conditions]: SearchEmployee.IState;
 }
 
 export interface ActionMapper {
-  [modules.search.employer.conditions]: SearchEmployer.IActions;
+  [modules.search.employer.conditions]: SearchEmployee.IActions;
 }

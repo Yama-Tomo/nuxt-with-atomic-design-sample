@@ -3,7 +3,7 @@ import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { VBtn, VTextField } from 'vuetify-tsx';
 import VAutocomplete from '@/types/vuetify/VAutocomplete';
-import { IActions, IState, ChooseDataElement } from '@/store_modules/search/employer';
+import { IActions, IState, ChooseDataElement } from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
 
 type Conditions = {
@@ -15,7 +15,7 @@ type Conditions = {
 }
 
 @Component
-class EmployerSearchBox extends Vue {
+class EmployeeSearchBox extends Vue {
   @Prop({ required: true, type: Object }) state!: IState;
   @Prop({ required: true, type: Object }) actions!: ActionTree<IActions>;
   applyConditionFunctions: Conditions = {};
@@ -85,6 +85,6 @@ class EmployerSearchBox extends Vue {
   }
 }
 
-type Props = Pick<EmployerSearchBox, 'state' | 'actions'>;
-export default vts.ofType<Props>().convert(EmployerSearchBox);
+type Props = Pick<EmployeeSearchBox, 'state' | 'actions'>;
+export default vts.ofType<Props>().convert(EmployeeSearchBox);
 </script>

@@ -1,1 +1,1 @@
-export { state, mutations, actions } from '@/store_modules/search/employer';
+export { state, mutations, actions } from '@/store_modules/search/employee';
