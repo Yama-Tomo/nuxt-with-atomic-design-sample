@@ -14,6 +14,10 @@ export interface IState {
     name?: string;
     sex?: ChooseDataElement;
     country?: ChooseDataElement;
+    descending: boolean;
+    page: number;
+    sortBy: string;
+    rowsPerPage: number;
   };
 }
 
@@ -22,7 +26,12 @@ const defaultState = (): IState => ({
   branches: [],
   sex: [],
   countries: [],
-  conditions: {},
+  conditions: {
+    descending: false,
+    page: 1,
+    sortBy: 'name',
+    rowsPerPage: 10,
+  },
 });
 
 export default defaultState;
