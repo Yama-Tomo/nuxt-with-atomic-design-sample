@@ -1,11 +1,11 @@
 import { DefineActions } from 'vuex-type-helper';
-import { ChooseDataElement, IState } from './state';
-import { IMutations, setConditionArg } from './mutations';
+import { IState } from './state';
+import { IMutations } from './mutations';
 
 export interface IActions {
-  resetState: undefined;
-  setChooseData: { key: 'groups' | 'branches'; val: ChooseDataElement[] };
-  setConditions: setConditionArg;
+  resetState: IMutations['resetState'];
+  setChooseData: IMutations['setChooseData'];
+  setConditions: IMutations['setConditions'];
 }
 
 export const actions: DefineActions<IActions, IState, IMutations> = {
