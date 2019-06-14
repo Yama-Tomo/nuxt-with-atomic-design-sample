@@ -1,4 +1,4 @@
-import { camelizeKeysDeep } from '@/repositories/camelize';
+import { camelizeKeysDeep } from '@/utils/camelize';
 
 interface SuccessResponse {
   id: number;
@@ -11,7 +11,7 @@ interface SuccessResponse {
 }
 
 export class Request {
-  call(): SuccessResponse[] {
+  public call(): SuccessResponse[] {
     // TODO: ここでAPIへアクセスする
     const response = {};
 
