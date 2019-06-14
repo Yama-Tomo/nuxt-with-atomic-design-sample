@@ -10,8 +10,8 @@ branches = []
 
 [
   ['営業', %w[第一営業部 第二営業部 法人営業部]],
-  ['システム開発', %w[システム開発部 インフラ部　デザイン部]],
-  ['総合', %w[総務部　法務部 カスタマーサポート]]
+  ['システム開発', %w[システム開発部 インフラ部 デザイン部]],
+  ['総合', %w[総務部 法務部 カスタマーサポート]]
 ].each do |value|
   group = Group.new(name: value.first).tap(&:save)
   value.last.each do |branch|
