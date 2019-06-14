@@ -52,6 +52,9 @@ export default {
     proxy: true,
   },
   proxy: {
-    '/api': process.env.BACKEND_HOST || 'http://localhost:3301',
+    '/api': {
+      target: process.env.BACKEND_HOST || 'http://localhost:3301',
+      pathRewrite: { '^/api': '' },
+    },
   },
 };
