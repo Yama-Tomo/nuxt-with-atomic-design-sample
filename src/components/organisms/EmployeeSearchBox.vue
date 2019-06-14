@@ -31,60 +31,97 @@ class EmployeeSearchBox extends Vue {
   }
 
   render() {
+    const group = () => (
+      <VAutocomplete
+        label="グループ"
+        items={this.state.groups}
+        item-text="label"
+        item-value="value"
+        return-object
+        onChange={(e: ChooseDataElement) =>
+          this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e })
+        }
+      />
+    );
+
+    const branch = () => (
+      <VAutocomplete
+        label="部署"
+        items={this.state.branches}
+        item-text="label"
+        item-value="value"
+        return-object
+        onChange={(e: ChooseDataElement) =>
+          this.applyConditionFunctions.branch = () => this.actions.setConditions({ key: 'branch', val: e })
+        }
+      />
+    );
+
+    const name = () => (
+      <VTextField
+        label="氏名"
+        onChange={(e: string) =>
+          this.applyConditionFunctions.name = () => this.actions.setConditions({ key: 'name', val: e })
+        }
+      />
+    );
+
+    const sex = () => (
+      <VAutocomplete
+        label="性別"
+        items={this.state.sex}
+        item-text="label"
+        item-value="value"
+        return-object
+        onChange={(e: ChooseDataElement) =>
+          this.applyConditionFunctions.sex = () => this.actions.setConditions({ key: 'sex', val: e })
+        }
+      />
+    );
+
+    const country = () => (
+      <VAutocomplete
+        label="国籍"
+        items={this.state.countries}
+        item-text="label"
+        item-value="value"
+        return-object
+        onChange={(e: ChooseDataElement) =>
+          this.applyConditionFunctions.country = () => this.actions.setConditions({ key: 'country', val: e })
+        }
+      />
+    );
+
+    const button = () => <VBtn color="primary" onClick={this.onClick}>Search</VBtn>;
+
+    if (this.$scopedSlots.customLayout) {
+      return this.$scopedSlots.customLayout({ group, branch, name, sex, country, button });
+    }
+
     return (
       <div>
-        <VAutocomplete
-          label="グループ"
-          items={this.state.groups}
-          item-text="label"
-          item-value="value"
-          return-object
-          onChange={(e: ChooseDataElement) =>
-            this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e })
-          }
-        />
-        <VAutocomplete
-          label="部署"
-          items={this.state.branches}
-          item-text="label"
-          item-value="value"
-          return-object
-          onChange={(e: ChooseDataElement) =>
-            this.applyConditionFunctions.branch = () => this.actions.setConditions({ key: 'branch', val: e })
-          }
-        />
-        <VTextField
-          label="氏名"
-          onChange={(e: string) =>
-            this.applyConditionFunctions.name = () => this.actions.setConditions({ key: 'name', val: e })
-          }
-        />
-        <VAutocomplete
-          label="性別"
-          items={this.state.sex}
-          item-text="label"
-          item-value="value"
-          return-object
-          onChange={(e: ChooseDataElement) =>
-            this.applyConditionFunctions.sex = () => this.actions.setConditions({ key: 'sex', val: e })
-          }
-        />
-        <VAutocomplete
-          label="国籍"
-          items={this.state.countries}
-          item-text="label"
-          item-value="value"
-          return-object
-          onChange={(e: ChooseDataElement) =>
-            this.applyConditionFunctions.country = () => this.actions.setConditions({ key: 'country', val: e })
-          }
-        />
-        <VBtn color="primary" onClick={this.onClick}>Search</VBtn>
+        {group()}
+        {branch()}
+        {name()}
+        {sex()}
+        {country()}
+        {button()}
       </div>
     );
   }
 }
 
 type Props = Pick<EmployeeSearchBox, 'state' | 'actions'>;
-export default vts.ofType<Props>().convert(EmployeeSearchBox);
+interface Slots {
+  customLayout: {
+    group: () => void;
+    branch: () => void;
+    name: () => void;
+    sex: () => void;
+    country: () => void;
+    button: () => void;
+  }
+}
+
+export default vts.ofType<Props, {}, Slots>().convert(EmployeeSearchBox);
 </script>
