@@ -1,6 +1,6 @@
 export type AttributeElement = {
   label: string | number | null;
-  value: string | number | null;
+  value: number;
 };
 
 export interface IState {

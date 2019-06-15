@@ -24,7 +24,7 @@ interface RequestParams {
   descending?: boolean;
   page?: number;
   sortBy?: string;
-  rowsPerPage?: string;
+  rowsPerPage?: number;
 }
 
 export class Request {
