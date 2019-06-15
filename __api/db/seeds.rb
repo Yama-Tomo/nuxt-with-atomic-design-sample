@@ -21,7 +21,7 @@ end
 
 def save_employee(employees, branches, sex_id, country_id)
   employees.each do |employee|
-    if (sex_id == 1)
+    if country_id == 1
       last_name, first_name = employee.split ' '
     else
       first_name, last_name = employee.split ' '
