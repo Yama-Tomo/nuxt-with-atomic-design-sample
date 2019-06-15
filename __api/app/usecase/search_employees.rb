@@ -49,7 +49,7 @@ class SearchEmployees
       end
 
       def this.pagination(params)
-        desc = params[:descending].present? ? :DESC : ''
+        desc = params[:descending] == 'true' ? :DESC : ''
 
         relation = self
         relation = relation.order(Arel.sql "id #{desc}")          if params[:sortBy] == 'id'
