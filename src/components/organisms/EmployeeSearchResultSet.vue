@@ -18,7 +18,7 @@ class EmployeeSearchResultSet extends Vue {
   @Prop({ required: true, type: Object }) dataSets!: { items: DataProvider.IEmployee[]; totalCount: number };
   paginationChangedTime = 0;
 
-  onChangePagination(pagination: Pagination) {
+  onPaginationChanged(pagination: Pagination) {
     if (pagination.page) {
       this.actions.setConditions({ key: 'page', val: pagination.page });
     }
@@ -74,7 +74,7 @@ class EmployeeSearchResultSet extends Vue {
           }
         }}
         on={
-          { 'update:pagination': this.onChangePagination }
+          { 'update:pagination': this.onPaginationChanged }
         }
       />
     );
