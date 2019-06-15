@@ -29,6 +29,7 @@ class EmployeeSearchBox extends Vue {
       }
     });
     this.applyConditionFunctions = {};
+    this.$emit('click');
   }
 
   render() {
@@ -113,6 +114,7 @@ class EmployeeSearchBox extends Vue {
 }
 
 type Props = Pick<EmployeeSearchBox, 'employee' | 'actions'>;
+
 interface Slots {
   customLayout: {
     group: () => void;
@@ -124,5 +126,9 @@ interface Slots {
   }
 }
 
-export default vts.ofType<Props, {}, Slots>().convert(EmployeeSearchBox);
+interface Events {
+  onClick: () => void;
+}
+
+export default vts.ofType<Props, Events, Slots>().convert(EmployeeSearchBox);
 </script>
