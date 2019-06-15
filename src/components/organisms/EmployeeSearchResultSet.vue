@@ -16,6 +16,7 @@ class EmployeeSearchResultSet extends Vue {
   @Prop({ required: true, type: Object }) searchEmployee!: SearchEmployee.IState;
   @Prop({ required: true, type: Object }) actions!: ActionTree<SearchEmployee.IActions>;
   @Prop({ required: true, type: Object }) dataSets!: { items: DataProvider.IEmployee[]; totalCount: number };
+  paginationChangedTime = 0;
 
   onChangePagination(pagination: Pagination) {
     if (pagination.page) {
@@ -30,6 +31,13 @@ class EmployeeSearchResultSet extends Vue {
 
     if (pagination.rowsPerPage) {
       this.actions.setConditions({ key: 'rowsPerPage', val: pagination.rowsPerPage });
+    }
+
+    this.paginationChangedTime++;
+    if (this.paginationChangedTime !== 1) {
+      // NOTE: propsで検索結果が渡されてくるので1回目のイベントは呼ばれても検索用のAPIを呼び出す必要がない.
+      // 検索用のAPIのトリガとなるemit を飛ばすのは1回目以外かの判定をいれる
+      this.$emit('paginationChanged');
     }
   }
 
