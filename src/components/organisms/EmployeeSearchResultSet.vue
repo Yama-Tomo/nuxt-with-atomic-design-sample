@@ -5,7 +5,7 @@ import { VDataTable } from 'vuetify-tsx';
 import * as Employee from '@/store_modules/employee';
 import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
-import * as DataProvider from '@/components/organisms/EmployeeSearchResultSet/data_provider';
+import * as DataProvider from '@/domains/UI/organisms/EmployeeSearchResultSet/data_provider';
 
 type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs']
 type Pagination = Parameters<NonNullable<NonNullable<TsxAttrs['on']>['update:pagination']>>[0];
