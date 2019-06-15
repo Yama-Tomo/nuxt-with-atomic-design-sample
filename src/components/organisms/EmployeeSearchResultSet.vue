@@ -2,7 +2,8 @@
 import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { VDataTable } from 'vuetify-tsx';
-import { IActions, IState } from '@/store_modules/search/employee';
+import * as Employee from '@/store_modules/employee';
+import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
 import * as DataProvider from '@/components/organisms/EmployeeSearchResultSet/data_provider';
 
@@ -11,10 +12,11 @@ type Pagination = Parameters<NonNullable<NonNullable<TsxAttrs['on']>['update:pag
 
 @Component
 class EmployeeSearchResultSet extends Vue {
-  @Prop({ required: true, type: Object }) state!: IState;
-  @Prop({ required: true, type: Object }) actions!: ActionTree<IActions>;
   // TODO: ドメインオブジェクトを実装したらanyを変更する
   @Prop({ required: true, type: Object }) dataSets!: { items: any[]; totalCount: number };
+  @Prop({ required: true, type: Object }) employee!: Employee.IState;
+  @Prop({ required: true, type: Object }) searchEmployee!: SearchEmployee.IState;
+  @Prop({ required: true, type: Object }) actions!: ActionTree<SearchEmployee.IActions>;
 
   onChangePagination(pagination: Pagination) {
     if (pagination.page) {
@@ -37,7 +39,7 @@ class EmployeeSearchResultSet extends Vue {
       <VDataTable
         items={this.dataSets.items}
         totalItems={this.dataSets.totalCount}
-        pagination={DataProvider.pagination(this.state)}
+        pagination={DataProvider.pagination(this.searchEmployee)}
         headers={DataProvider.headers()}
         scopedSlots={{
           items: props => {
@@ -57,6 +59,6 @@ class EmployeeSearchResultSet extends Vue {
   }
 }
 
-type Props = Pick<EmployeeSearchResultSet, 'state' | 'actions' | 'dataSets'>;
+type Props = Pick<EmployeeSearchResultSet, 'employee' | 'searchEmployee' | 'actions' | 'dataSets'>;
 export default vts.ofType<Props>().convert(EmployeeSearchResultSet);
 </script>

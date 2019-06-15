@@ -1,6 +1,6 @@
-import { IState } from '@/store_modules/search/employee';
+import * as SearchEmployee from '@/store_modules/search/employee';
 
-export const pagination = (conditions: IState) => ({
+export const pagination = (conditions: SearchEmployee.IState) => ({
   descending: conditions.descending,
   page: conditions.page,
   sortBy: conditions.sortBy,
