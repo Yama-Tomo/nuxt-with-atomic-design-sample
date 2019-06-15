@@ -4,7 +4,7 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { VDataTable } from 'vuetify-tsx';
 import { IActions, IState } from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
-import { headers, pagination } from './functions/employee_search_result_set';
+import * as DataProvider from '@/components/organisms/EmployeeSearchResultSet/data_provider';
 
 type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs']
 type Pagination = Parameters<NonNullable<NonNullable<TsxAttrs['on']>['update:pagination']>>[0];
@@ -37,8 +37,8 @@ class EmployeeSearchResultSet extends Vue {
       <VDataTable
         items={this.dataSets.items}
         totalItems={this.dataSets.totalCount}
-        pagination={pagination(this.state)}
-        headers={headers()}
+        pagination={DataProvider.pagination(this.state)}
+        headers={DataProvider.headers()}
         scopedSlots={{
           items: props => {
             return (
