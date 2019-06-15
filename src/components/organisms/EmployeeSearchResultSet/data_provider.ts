@@ -1,6 +1,9 @@
 import * as SearchEmployee from '@/store_modules/search/employee';
 import * as Employee from '@/store_modules/employee';
 import * as EmployeeDomain from '@/domains/employee';
+import { VDataTable } from 'vuetify-tsx';
+
+type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs'];
 
 export interface IEmployee {
   id: number;
@@ -18,13 +21,12 @@ export const pagination = (conditions: SearchEmployee.IState) => ({
   rowsPerPage: conditions.rowsPerPage,
 });
 
-export const headers = () => [
-  { text: 'ID', value: 'id' },
-  { text: '氏名', value: 'name' },
-  { text: 'グループ', value: 'group_name' },
-  { text: '部署', value: 'branch_name' },
-  { text: '性別', value: 'sex' },
-  { text: '国籍', value: 'country' },
+export const headers = (): TsxAttrs['headers'] => [
+  { text: 'ID', value: 'id', align: 'center' },
+  { text: '氏名', value: 'name', align: 'left' },
+  { text: 'グループ', value: 'group_name', align: 'left' },
+  { text: '性別', value: 'sex', align: 'center' },
+  { text: '国籍', value: 'country', align: 'center' },
 ];
 
 export const decorate = (
