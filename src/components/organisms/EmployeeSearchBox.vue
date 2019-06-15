@@ -29,6 +29,7 @@ class EmployeeSearchBox extends Vue {
       }
     });
     this.applyConditionFunctions = {};
+    this.actions.setConditions({ key: 'page', val: 1 });
     this.$emit('click');
   }
 
