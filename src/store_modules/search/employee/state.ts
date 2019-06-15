@@ -15,7 +15,7 @@ export interface IState {
 const defaultState = (): IState => ({
   descending: false,
   page: 1,
-  sortBy: 'name',
+  sortBy: 'id',
   rowsPerPage: 10,
 });
 
