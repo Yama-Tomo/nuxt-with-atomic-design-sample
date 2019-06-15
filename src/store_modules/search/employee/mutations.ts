@@ -1,10 +1,11 @@
 import { DefineMutations } from 'vuex-type-helper';
-import defaultState, { IState, ChooseDataElement } from './state';
+import defaultState, { IState } from './state';
 import { replace, swap } from '@/utils/variable';
 
 type ConditionKeyValuePair = {
-  [P in keyof IState['conditions']]: { key: P; val: IState['conditions'][P] }
+  [P in keyof IState]: { key: P; val: IState[P] }
 };
+
 export type setConditionArg = Exclude<
   ConditionKeyValuePair[keyof ConditionKeyValuePair],
   undefined
@@ -12,10 +13,6 @@ export type setConditionArg = Exclude<
 
 export interface IMutations {
   resetState: undefined;
-  setChooseData: {
-    key: 'groups' | 'branches' | 'sex' | 'countries';
-    val: ChooseDataElement[];
-  };
   setConditions: setConditionArg;
 }
 
@@ -26,11 +23,8 @@ export const mutations: DefineMutations<IMutations, IState> = {
       swap(state, resetState, key);
     }
   },
-  setChooseData(state, args) {
-    state[args.key] = args.val;
-  },
   setConditions(state, args) {
-    replace(state.conditions, args.key, args.val);
+    replace(state, args.key, args.val);
   },
 };
 

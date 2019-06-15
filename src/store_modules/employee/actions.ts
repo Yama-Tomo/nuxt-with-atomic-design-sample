@@ -4,12 +4,12 @@ import { IMutations } from './mutations';
 
 export interface IActions {
   resetState: IMutations['resetState'];
-  setConditions: IMutations['setConditions'];
+  setAttribute: IMutations['setAttribute'];
 }
 
 export const actions: DefineActions<IActions, IState, IMutations> = {
   resetState: ({ commit }) => commit('resetState', undefined),
-  setConditions: ({ commit }, args) => commit('setConditions', args),
+  setAttribute: ({ commit }, args) => commit('setAttribute', args),
 };
 
 export default actions;
