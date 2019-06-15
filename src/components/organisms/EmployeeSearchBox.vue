@@ -48,7 +48,7 @@ class EmployeeSearchBox extends Vue {
     const branch = () => (
       <VAutocomplete
         label="部署"
-        items={this.employee.attributes.groups}
+        items={this.employee.attributes.branches}
         item-text="label"
         item-value="value"
         return-object
