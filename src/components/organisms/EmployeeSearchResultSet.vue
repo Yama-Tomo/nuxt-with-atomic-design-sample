@@ -12,11 +12,10 @@ type Pagination = Parameters<NonNullable<NonNullable<TsxAttrs['on']>['update:pag
 
 @Component
 class EmployeeSearchResultSet extends Vue {
-  // TODO: ドメインオブジェクトを実装したらanyを変更する
-  @Prop({ required: true, type: Object }) dataSets!: { items: any[]; totalCount: number };
   @Prop({ required: true, type: Object }) employee!: Employee.IState;
   @Prop({ required: true, type: Object }) searchEmployee!: SearchEmployee.IState;
   @Prop({ required: true, type: Object }) actions!: ActionTree<SearchEmployee.IActions>;
+  @Prop({ required: true, type: Object }) dataSets!: { items: DataProvider.IEmployee[]; totalCount: number };
 
   onChangePagination(pagination: Pagination) {
     if (pagination.page) {
@@ -42,11 +41,26 @@ class EmployeeSearchResultSet extends Vue {
         pagination={DataProvider.pagination(this.searchEmployee)}
         headers={DataProvider.headers()}
         scopedSlots={{
-          items: props => {
+          items: (props: { item: DataProvider.IEmployee }) => {
+            const employee = DataProvider.decorate(props.item, this.employee.attributes);
             return (
               <tr>
-                <td class="text-xs-right">{(props.item as any).name}</td>
-                <td class="text-xs-right">{(props.item as any).country}</td>
+                <td class="text-xs-right">{employee.id}</td>
+                <td>{employee.fullName}</td>
+                <td>
+                  {props.item.belongs.map(belongs => (
+                    <ul>
+                      <li>{belongs.group}</li>
+                      <ul class="branch">
+                        {belongs.branches.map(branch => (
+                          <li>{branch}</li>
+                        ))}
+                      </ul>
+                    </ul>
+                  ))}
+                </td>
+                <td class="text-xs-right">{employee.sex}</td>
+                <td class="text-xs-right">{employee.country}</td>
               </tr>
             );
           }
