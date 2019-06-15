@@ -3,7 +3,8 @@ import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { VBtn, VTextField } from 'vuetify-tsx';
 import VAutocomplete from '@/types/vuetify/VAutocomplete';
-import { IActions, IState, ChooseDataElement } from '@/store_modules/search/employee';
+import * as Employee from '@/store_modules/employee';
+import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
 
 type Conditions = {
@@ -16,8 +17,8 @@ type Conditions = {
 
 @Component
 class EmployeeSearchBox extends Vue {
-  @Prop({ required: true, type: Object }) state!: IState;
-  @Prop({ required: true, type: Object }) actions!: ActionTree<IActions>;
+  @Prop({ required: true, type: Object }) employee!: Employee.IState;
+  @Prop({ required: true, type: Object }) actions!: ActionTree<SearchEmployee.IActions>;
   applyConditionFunctions: Conditions = {};
 
   onClick() {
@@ -34,11 +35,11 @@ class EmployeeSearchBox extends Vue {
     const group = () => (
       <VAutocomplete
         label="グループ"
-        items={this.state.groups}
+        items={this.employee.attributes.groups}
         item-text="label"
         item-value="value"
         return-object
-        onChange={(e: ChooseDataElement) =>
+        onChange={(e: Employee.AttributeElement) =>
           this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e })
         }
       />
@@ -47,11 +48,11 @@ class EmployeeSearchBox extends Vue {
     const branch = () => (
       <VAutocomplete
         label="部署"
-        items={this.state.branches}
+        items={this.employee.attributes.groups}
         item-text="label"
         item-value="value"
         return-object
-        onChange={(e: ChooseDataElement) =>
+        onChange={(e: Employee.AttributeElement) =>
           this.applyConditionFunctions.branch = () => this.actions.setConditions({ key: 'branch', val: e })
         }
       />
@@ -69,11 +70,11 @@ class EmployeeSearchBox extends Vue {
     const sex = () => (
       <VAutocomplete
         label="性別"
-        items={this.state.sex}
+        items={this.employee.attributes.sex}
         item-text="label"
         item-value="value"
         return-object
-        onChange={(e: ChooseDataElement) =>
+        onChange={(e: Employee.AttributeElement) =>
           this.applyConditionFunctions.sex = () => this.actions.setConditions({ key: 'sex', val: e })
         }
       />
@@ -82,11 +83,11 @@ class EmployeeSearchBox extends Vue {
     const country = () => (
       <VAutocomplete
         label="国籍"
-        items={this.state.countries}
+        items={this.employee.attributes.countries}
         item-text="label"
         item-value="value"
         return-object
-        onChange={(e: ChooseDataElement) =>
+        onChange={(e: Employee.AttributeElement) =>
           this.applyConditionFunctions.country = () => this.actions.setConditions({ key: 'country', val: e })
         }
       />
@@ -111,7 +112,7 @@ class EmployeeSearchBox extends Vue {
   }
 }
 
-type Props = Pick<EmployeeSearchBox, 'state' | 'actions'>;
+type Props = Pick<EmployeeSearchBox, 'employee' | 'actions'>;
 interface Slots {
   customLayout: {
     group: () => void;

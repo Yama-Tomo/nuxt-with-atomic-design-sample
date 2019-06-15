@@ -18,7 +18,7 @@ class EmployeeSearchResultSet extends Vue {
       <VDataTable
         items={this.dataSets.items}
         totalItems={this.dataSets.totalCount}
-        pagination={pagination(this.state.conditions)}
+        pagination={pagination(this.state)}
         headers={headers()}
         scopedSlots={{
           items: props => {
@@ -45,7 +45,6 @@ class EmployeeSearchResultSet extends Vue {
             if (pagination.rowsPerPage) {
               this.actions.setConditions({ key: 'rowsPerPage', val: pagination.rowsPerPage });
             }
-
           }
         }}
       />

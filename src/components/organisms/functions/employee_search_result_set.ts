@@ -1,6 +1,6 @@
 import { IState } from '@/store_modules/search/employee';
 
-export const pagination = (conditions: IState['conditions']) => ({
+export const pagination = (conditions: IState) => ({
   descending: conditions.descending,
   page: conditions.page,
   sortBy: conditions.sortBy,
