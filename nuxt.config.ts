@@ -1,7 +1,7 @@
 import extendWebpackConfig from './extend.webpack.config';
 
 const port = process.env.NUXT_PORT || 3300;
-const host = process.env.NUXT_HOST || '0.0.0.0';
+const host = process.env.NUXT_HOST || 'localhost';
 const isDev = process.env.NODE_ENV === 'development';
 
 export default {
