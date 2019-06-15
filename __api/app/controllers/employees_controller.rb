@@ -13,8 +13,8 @@ class EmployeesController < ActionController::Base
         id: row.id,
         first_name: row.first_name,
         last_name: row.last_name,
-        sex: row.sex.name,
-        country: row.country.name,
+        sex: row.sex.id,
+        country: row.country.id,
         belongs: belongs,
       }
     end
