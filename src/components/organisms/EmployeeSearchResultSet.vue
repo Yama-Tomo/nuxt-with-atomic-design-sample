@@ -74,5 +74,10 @@ class EmployeeSearchResultSet extends Vue {
 }
 
 type Props = Pick<EmployeeSearchResultSet, 'employee' | 'searchEmployee' | 'actions' | 'dataSets'>;
-export default vts.ofType<Props>().convert(EmployeeSearchResultSet);
+
+interface Events {
+  onPaginationChanged: () => void;
+}
+
+export default vts.ofType<Props, Events>().convert(EmployeeSearchResultSet);
 </script>
