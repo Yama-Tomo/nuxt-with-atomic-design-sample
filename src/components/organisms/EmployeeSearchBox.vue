@@ -41,6 +41,7 @@ class EmployeeSearchBox extends Vue {
         item-text="label"
         item-value="value"
         return-object
+        clearable
         onChange={(e: Employee.AttributeElement) =>
           this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e })
         }
@@ -54,6 +55,7 @@ class EmployeeSearchBox extends Vue {
         item-text="label"
         item-value="value"
         return-object
+        clearable
         onChange={(e: Employee.AttributeElement) =>
           this.applyConditionFunctions.branch = () => this.actions.setConditions({ key: 'branch', val: e })
         }
@@ -76,6 +78,7 @@ class EmployeeSearchBox extends Vue {
         item-text="label"
         item-value="value"
         return-object
+        clearable
         onChange={(e: Employee.AttributeElement) =>
           this.applyConditionFunctions.sex = () => this.actions.setConditions({ key: 'sex', val: e })
         }
@@ -89,6 +92,7 @@ class EmployeeSearchBox extends Vue {
         item-text="label"
         item-value="value"
         return-object
+        clearable
         onChange={(e: Employee.AttributeElement) =>
           this.applyConditionFunctions.country = () => this.actions.setConditions({ key: 'country', val: e })
         }
