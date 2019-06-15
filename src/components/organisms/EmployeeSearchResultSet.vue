@@ -6,12 +6,31 @@ import { IActions, IState } from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
 import { headers, pagination } from './functions/employee_search_result_set';
 
+type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs']
+type Pagination = Parameters<NonNullable<NonNullable<TsxAttrs['on']>['update:pagination']>>[0];
+
 @Component
 class EmployeeSearchResultSet extends Vue {
   @Prop({ required: true, type: Object }) state!: IState;
   @Prop({ required: true, type: Object }) actions!: ActionTree<IActions>;
   // TODO: ドメインオブジェクトを実装したらanyを変更する
   @Prop({ required: true, type: Object }) dataSets!: { items: any[]; totalCount: number };
+
+  onChangePagination(pagination: Pagination) {
+    if (pagination.page) {
+      this.actions.setConditions({ key: 'page', val: pagination.page });
+    }
+
+    if (pagination.sortBy) {
+      this.actions.setConditions({ key: 'sortBy', val: pagination.sortBy });
+    }
+
+    this.actions.setConditions({ key: 'descending', val: !!pagination.descending });
+
+    if (pagination.rowsPerPage) {
+      this.actions.setConditions({ key: 'rowsPerPage', val: pagination.rowsPerPage });
+    }
+  }
 
   render() {
     return (
@@ -30,23 +49,9 @@ class EmployeeSearchResultSet extends Vue {
             );
           }
         }}
-        on={{
-          'update:pagination': (pagination) => {
-            if (pagination.page) {
-              this.actions.setConditions({ key: 'page', val: pagination.page });
-            }
-
-            if (pagination.sortBy) {
-              this.actions.setConditions({ key: 'sortBy', val: pagination.sortBy });
-            }
-
-            this.actions.setConditions({ key: 'descending', val: !!pagination.descending });
-
-            if (pagination.rowsPerPage) {
-              this.actions.setConditions({ key: 'rowsPerPage', val: pagination.rowsPerPage });
-            }
-          }
-        }}
+        on={
+          { 'update:pagination': this.onChangePagination }
+        }
       />
     );
   }
