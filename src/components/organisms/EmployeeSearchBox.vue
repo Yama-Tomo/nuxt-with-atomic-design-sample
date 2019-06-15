@@ -27,8 +27,8 @@ class EmployeeSearchBox extends Vue {
       if (func) {
         func();
       }
-      this.applyConditionFunctions = {};
-    })
+    });
+    this.applyConditionFunctions = {};
   }
 
   render() {
