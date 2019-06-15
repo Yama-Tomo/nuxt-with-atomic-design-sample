@@ -24,7 +24,7 @@ export const pagination = (conditions: SearchEmployee.IState) => ({
 export const headers = (): TsxAttrs['headers'] => [
   { text: 'ID', value: 'id', align: 'center' },
   { text: '氏名', value: 'name', align: 'left' },
-  { text: '所属', value: 'group_name', align: 'left' },
+  { text: '所属', value: 'belongs', align: 'left' },
   { text: '性別', value: 'sex', align: 'center' },
   { text: '国籍', value: 'country', align: 'center' },
 ];

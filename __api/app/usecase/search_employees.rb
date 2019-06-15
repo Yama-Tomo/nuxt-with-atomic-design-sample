@@ -55,8 +55,8 @@ class SearchEmployees
         relation = relation.order(Arel.sql "id #{desc}")          if params[:sortBy] == 'id'
         relation = relation.order(Arel.sql "first_name #{desc}")
                   .order(Arel.sql "last_name #{desc}")            if params[:sortBy] == 'name'
-        relation = relation.order(Arel.sql "groups.id #{desc}")   if params[:sortBy] == 'group_name'
-        relation = relation.order(Arel.sql "branches.id #{desc}") if params[:sortBy] == 'branch_name'
+        relation = relation.order(Arel.sql "groups.id #{desc}")
+                  .order(Arel.sql "branches.id #{desc}")          if params[:sortBy] == 'belongs'
         relation = relation.order(Arel.sql "sex_id #{desc}")      if params[:sortBy] == 'sex'
         relation = relation.order(Arel.sql "country_id #{desc}")  if params[:sortBy] == 'country'
 
