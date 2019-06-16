@@ -42,9 +42,9 @@ class EmployeeSearchBox extends Vue {
         item-value="value"
         return-object
         clearable
-        onChange={(e: Employee.AttributeElement) =>
           this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e })
         }
+        onChange={(e: Employee.AttributeElement | undefined) => {
       />
     );
 
@@ -56,7 +56,7 @@ class EmployeeSearchBox extends Vue {
         item-value="value"
         return-object
         clearable
-        onChange={(e: Employee.AttributeElement) =>
+        onChange={(e: Employee.AttributeElement | undefined) =>
           this.applyConditionFunctions.branch = () => this.actions.setConditions({ key: 'branch', val: e })
         }
       />
@@ -65,7 +65,7 @@ class EmployeeSearchBox extends Vue {
     const name = () => (
       <VTextField
         label="氏名"
-        onChange={(e: string) =>
+        onChange={(e: string | undefined) =>
           this.applyConditionFunctions.name = () => this.actions.setConditions({ key: 'name', val: e })
         }
       />
@@ -79,7 +79,7 @@ class EmployeeSearchBox extends Vue {
         item-value="value"
         return-object
         clearable
-        onChange={(e: Employee.AttributeElement) =>
+        onChange={(e: Employee.AttributeElement | undefined) =>
           this.applyConditionFunctions.sex = () => this.actions.setConditions({ key: 'sex', val: e })
         }
       />
@@ -93,7 +93,7 @@ class EmployeeSearchBox extends Vue {
         item-value="value"
         return-object
         clearable
-        onChange={(e: Employee.AttributeElement) =>
+        onChange={(e: Employee.AttributeElement | undefined) =>
           this.applyConditionFunctions.country = () => this.actions.setConditions({ key: 'country', val: e })
         }
       />
