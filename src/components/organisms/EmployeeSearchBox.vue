@@ -6,6 +6,7 @@ import VAutocomplete from '@/types/vuetify/VAutocomplete';
 import * as Employee from '@/store_modules/employee';
 import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
+import { NuxtAxiosInstance } from '@nuxtjs/axios';
 
 type Conditions = {
   group?: () => void;
@@ -19,6 +20,8 @@ type Conditions = {
 class EmployeeSearchBox extends Vue {
   @Prop({ required: true, type: Object }) employee!: Employee.IState;
   @Prop({ required: true, type: Object }) actions!: ActionTree<SearchEmployee.IActions>;
+  @Prop({ required: true, type: Function }) axios!: NuxtAxiosInstance;
+  @Prop({ required: true, type: Object }) employeeActions!: ActionTree<Employee.IActions>;
   applyConditionFunctions: Conditions = {};
 
   onClick() {
@@ -42,9 +45,14 @@ class EmployeeSearchBox extends Vue {
         item-value="value"
         return-object
         clearable
-          this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e })
-        }
         onChange={(e: Employee.AttributeElement | undefined) => {
+          this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e });
+          if (e === undefined) {
+            this.employeeActions.setAttribute({ key: 'branches', val: [] });
+          } else {
+            this.employeeActions.updateBranches({ axios: this.axios, groupId: e.value });
+          }
+        }}
       />
     );
 
@@ -118,7 +126,7 @@ class EmployeeSearchBox extends Vue {
   }
 }
 
-type Props = Pick<EmployeeSearchBox, 'employee' | 'actions'>;
+type Props = Pick<EmployeeSearchBox, 'employee' | 'axios' | 'actions' | 'employeeActions'>;
 
 interface Slots {
   customLayout: {
