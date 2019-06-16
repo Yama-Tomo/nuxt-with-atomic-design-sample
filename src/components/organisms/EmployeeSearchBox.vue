@@ -47,6 +47,8 @@ class EmployeeSearchBox extends Vue {
         clearable
         onChange={(e: Employee.AttributeElement | undefined) => {
           this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e });
+          this.actions.setConditions({ key: 'branch', val: undefined });
+
           if (e === undefined) {
             this.employeeActions.setAttribute({ key: 'branches', val: [] });
           } else {
