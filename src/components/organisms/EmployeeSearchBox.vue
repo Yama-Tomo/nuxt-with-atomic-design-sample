@@ -19,7 +19,7 @@ type Conditions = {
 @Component
 class EmployeeSearchBox extends Vue {
   @Prop({ required: true, type: Object }) employee!: Employee.IState;
-  @Prop({ required: true, type: Object }) actions!: ActionTree<SearchEmployee.IActions>;
+  @Prop({ required: true, type: Object }) searchEmployeeActions!: ActionTree<SearchEmployee.IActions>;
   @Prop({ required: true, type: Function }) axios!: NuxtAxiosInstance;
   @Prop({ required: true, type: Object }) employeeActions!: ActionTree<Employee.IActions>;
   applyConditionFunctions: Conditions = {};
@@ -32,7 +32,7 @@ class EmployeeSearchBox extends Vue {
       }
     });
     this.applyConditionFunctions = {};
-    this.actions.setConditions({ key: 'page', val: 1 });
+    this.searchEmployeeActions.setConditions({ key: 'page', val: 1 });
     this.$emit('click');
   }
 
@@ -46,8 +46,8 @@ class EmployeeSearchBox extends Vue {
         return-object
         clearable
         onChange={(e: Employee.AttributeElement | undefined) => {
-          this.applyConditionFunctions.group = () => this.actions.setConditions({ key: 'group', val: e });
-          this.actions.setConditions({ key: 'branch', val: undefined });
+          this.applyConditionFunctions.group = () => this.searchEmployeeActions.setConditions({ key: 'group', val: e });
+          this.searchEmployeeActions.setConditions({ key: 'branch', val: undefined });
 
           if (e === undefined) {
             this.employeeActions.setAttribute({ key: 'branches', val: [] });
@@ -67,7 +67,7 @@ class EmployeeSearchBox extends Vue {
         return-object
         clearable
         onChange={(e: Employee.AttributeElement | undefined) =>
-          this.applyConditionFunctions.branch = () => this.actions.setConditions({ key: 'branch', val: e })
+          this.applyConditionFunctions.branch = () => this.searchEmployeeActions.setConditions({ key: 'branch', val: e })
         }
       />
     );
@@ -76,7 +76,7 @@ class EmployeeSearchBox extends Vue {
       <VTextField
         label="氏名"
         onChange={(e: string | undefined) =>
-          this.applyConditionFunctions.name = () => this.actions.setConditions({ key: 'name', val: e })
+          this.applyConditionFunctions.name = () => this.searchEmployeeActions.setConditions({ key: 'name', val: e })
         }
       />
     );
@@ -90,7 +90,7 @@ class EmployeeSearchBox extends Vue {
         return-object
         clearable
         onChange={(e: Employee.AttributeElement | undefined) =>
-          this.applyConditionFunctions.sex = () => this.actions.setConditions({ key: 'sex', val: e })
+          this.applyConditionFunctions.sex = () => this.searchEmployeeActions.setConditions({ key: 'sex', val: e })
         }
       />
     );
@@ -104,7 +104,7 @@ class EmployeeSearchBox extends Vue {
         return-object
         clearable
         onChange={(e: Employee.AttributeElement | undefined) =>
-          this.applyConditionFunctions.country = () => this.actions.setConditions({ key: 'country', val: e })
+          this.applyConditionFunctions.country = () => this.searchEmployeeActions.setConditions({ key: 'country', val: e })
         }
       />
     );
@@ -128,7 +128,7 @@ class EmployeeSearchBox extends Vue {
   }
 }
 
-type Props = Pick<EmployeeSearchBox, 'employee' | 'axios' | 'actions' | 'employeeActions'>;
+type Props = Pick<EmployeeSearchBox, 'employee' | 'axios' | 'searchEmployeeActions' | 'employeeActions'>;
 
 interface Slots {
   customLayout: {
