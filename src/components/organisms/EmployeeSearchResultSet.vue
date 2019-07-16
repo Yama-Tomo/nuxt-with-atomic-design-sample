@@ -5,17 +5,57 @@ import { VDataTable } from 'vuetify-tsx';
 import * as Employee from '@/store_modules/employee';
 import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
-import * as DataProvider from '@/domains/UI/organisms/EmployeeSearchResultSet/data_provider';
 
 type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs']
 type Pagination = Parameters<NonNullable<NonNullable<TsxAttrs['on']>['update:pagination']>>[0];
+interface Employee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  belongs: Array<{ group: string; branches: string[] }>;
+  sex: number;
+  country: number;
+}
+
+const pagination = (conditions: SearchEmployee.IState) => ({
+  descending: conditions.descending,
+  page: conditions.page,
+  sortBy: conditions.sortBy,
+  rowsPerPage: conditions.rowsPerPage,
+});
+
+const headers = (): TsxAttrs['headers'] => [
+  { text: 'ID', value: 'id', align: 'center' },
+  { text: '氏名', value: 'name', align: 'left' },
+  { text: '所属', value: 'belongs', align: 'left' },
+  { text: '性別', value: 'sex', align: 'center' },
+  { text: '国籍', value: 'country', align: 'center' },
+];
+
+const decorate = (employee: Employee, employeeAttrs: Employee.IState['attributes']) => {
+  const sex = employeeAttrs.sex.find(v => v.value === employee.sex);
+  const country = employeeAttrs.countries.find(v => v.value === employee.country);
+
+  return {
+    ...employee,
+    ...{
+      fullName: Employee.fullName(
+        employee.firstName,
+        employee.lastName,
+        employee.country
+      ),
+      sex: (sex && sex.label) || '',
+      country: (country && country.label) || '',
+    },
+  };
+};
 
 @Component
 class EmployeeSearchResultSet extends Vue {
   @Prop({ required: true, type: Object }) employee!: Employee.IState;
   @Prop({ required: true, type: Object }) searchEmployee!: SearchEmployee.IState;
   @Prop({ required: true, type: Object }) actions!: ActionTree<SearchEmployee.IActions>;
-  @Prop({ required: true, type: Object }) dataSets!: { items: DataProvider.IEmployee[]; totalCount: number };
+  @Prop({ required: true, type: Object }) dataSets!: { items: Employee[]; totalCount: number };
   paginationChangedTime = 0;
 
   onPaginationChanged(pagination: Pagination) {
@@ -46,11 +86,11 @@ class EmployeeSearchResultSet extends Vue {
       <VDataTable
         items={this.dataSets.items}
         totalItems={this.dataSets.totalCount}
-        pagination={DataProvider.pagination(this.searchEmployee)}
-        headers={DataProvider.headers()}
+        pagination={pagination(this.searchEmployee)}
+        headers={headers()}
         scopedSlots={{
-          items: (props: { item: DataProvider.IEmployee }) => {
-            const employee = DataProvider.decorate(props.item, this.employee.attributes);
+          items: (props: { item: Employee }) => {
+            const employee = decorate(props.item, this.employee.attributes);
             return (
               <tr>
                 <td class="text-xs-right">{employee.id}</td>
