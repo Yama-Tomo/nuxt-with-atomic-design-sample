@@ -36,6 +36,18 @@ class EmployeeSearchBox extends Vue {
     this.$emit('click');
   }
 
+  updateBranchOptions(attrs: Employee.AttributeElement | undefined) {
+    this.applyConditionFunctions.group = () =>
+      this.searchEmployeeActions.setConditions({ group: attrs ? attrs.value : undefined });
+    this.searchEmployeeActions.setConditions({ branch: undefined });
+
+    if (attrs === undefined) {
+      this.employeeActions.setAttribute({ branches: [] });
+    } else {
+      this.employeeActions.updateBranches({ axios: this.axios, groupId: attrs.value });
+    }
+  }
+
   render() {
     const group = () => (
       <VAutocomplete
@@ -45,16 +57,7 @@ class EmployeeSearchBox extends Vue {
         item-value="value"
         return-object
         clearable
-        onChange={(e: Employee.AttributeElement | undefined) => {
-          this.applyConditionFunctions.group = () => this.searchEmployeeActions.setConditions({ key: 'group', val: e });
-          this.searchEmployeeActions.setConditions({ key: 'branch', val: undefined });
-
-          if (e === undefined) {
-            this.employeeActions.setAttribute({ branches: [] });
-          } else {
-            this.employeeActions.updateBranches({ axios: this.axios, groupId: e.value });
-          }
-        }}
+        onChange={this.updateBranchOptions}
       />
     );
 
