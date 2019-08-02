@@ -18,7 +18,7 @@ type Conditions = {
 
 @Component
 class EmployeeSearchBox extends Vue {
-  @Prop({ required: true, type: Object }) employee!: Employee.IState;
+  @Prop({ required: true, type: Object }) employeeAttrs!: Employee.IState['attributes'];
   @Prop({ required: true, type: Object }) searchActions!: ActionTree<SearchEmployee.IActions>;
   @Prop({ required: true, type: Function }) axios!: NuxtAxiosInstance;
   @Prop({ required: true, type: Object }) employeeActions!: ActionTree<Employee.IActions>;
@@ -52,7 +52,7 @@ class EmployeeSearchBox extends Vue {
     const group = () => (
       <VAutocomplete
         label="グループ"
-        items={this.employee.attributes.groups}
+        items={this.employeeAttrs.groups}
         item-text="label"
         item-value="value"
         return-object
@@ -64,7 +64,7 @@ class EmployeeSearchBox extends Vue {
     const branch = () => (
       <VAutocomplete
         label="部署"
-        items={this.employee.attributes.branches}
+        items={this.employeeAttrs.branches}
         item-text="label"
         item-value="value"
         return-object
@@ -87,7 +87,7 @@ class EmployeeSearchBox extends Vue {
     const sex = () => (
       <VAutocomplete
         label="性別"
-        items={this.employee.attributes.sex}
+        value={this.conditions.sex}
         item-text="label"
         item-value="value"
         return-object
@@ -101,7 +101,7 @@ class EmployeeSearchBox extends Vue {
     const country = () => (
       <VAutocomplete
         label="国籍"
-        items={this.employee.attributes.countries}
+        value={this.conditions.country}
         item-text="label"
         item-value="value"
         return-object
@@ -131,7 +131,7 @@ class EmployeeSearchBox extends Vue {
   }
 }
 
-type Props = Pick<EmployeeSearchBox, 'employee' | 'axios' | 'searchActions' | 'employeeActions'>;
+type Props = Pick<EmployeeSearchBox, 'employeeAttrs' | 'axios' | 'searchActions' | 'employeeActions'>;
 
 interface Slots {
   customLayout: {
