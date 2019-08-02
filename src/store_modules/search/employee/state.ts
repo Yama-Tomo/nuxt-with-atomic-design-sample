@@ -1,11 +1,11 @@
 import { AttributeElement } from '@/store_modules/employee';
 
 export interface IState {
-  group?: AttributeElement;
-  branch?: AttributeElement;
+  group?: AttributeElement['value'];
+  branch?: AttributeElement['value'];
   name?: string;
-  sex?: AttributeElement;
-  country?: AttributeElement;
+  sex?: AttributeElement['value'];
+  country?: AttributeElement['value'];
   descending: boolean;
   page: number;
   sortBy: string;

@@ -59,19 +59,7 @@ class EmployeeSearchResultSet extends Vue {
   paginationChangedTime = 0;
 
   onPaginationChanged(pagination: Pagination) {
-    if (pagination.page) {
-      this.actions.setConditions({ key: 'page', val: pagination.page });
-    }
-
-    if (pagination.sortBy) {
-      this.actions.setConditions({ key: 'sortBy', val: pagination.sortBy });
-    }
-
-    this.actions.setConditions({ key: 'descending', val: !!pagination.descending });
-
-    if (pagination.rowsPerPage) {
-      this.actions.setConditions({ key: 'rowsPerPage', val: pagination.rowsPerPage });
-    }
+    this.actions.setConditions(pagination);
 
     this.paginationChangedTime++;
     if (this.paginationChangedTime !== 1) {

@@ -32,7 +32,7 @@ class EmployeeSearchBox extends Vue {
       }
     });
     this.applyConditionFunctions = {};
-    this.searchEmployeeActions.setConditions({ key: 'page', val: 1 });
+    this.searchEmployeeActions.setConditions({ page: 1 });
     this.$emit('click');
   }
 
@@ -67,7 +67,7 @@ class EmployeeSearchBox extends Vue {
         return-object
         clearable
         onChange={(e: Employee.AttributeElement | undefined) =>
-          this.applyConditionFunctions.branch = () => this.searchEmployeeActions.setConditions({ key: 'branch', val: e })
+          this.applyConditionFunctions.branch = () => this.searchEmployeeActions.setConditions({ branch: e ? e.value : undefined })
         }
       />
     );
@@ -76,7 +76,7 @@ class EmployeeSearchBox extends Vue {
       <VTextField
         label="氏名"
         onChange={(e: string | undefined) =>
-          this.applyConditionFunctions.name = () => this.searchEmployeeActions.setConditions({ key: 'name', val: e })
+          this.applyConditionFunctions.name = () => this.searchEmployeeActions.setConditions({ name: e })
         }
       />
     );
@@ -90,7 +90,7 @@ class EmployeeSearchBox extends Vue {
         return-object
         clearable
         onChange={(e: Employee.AttributeElement | undefined) =>
-          this.applyConditionFunctions.sex = () => this.searchEmployeeActions.setConditions({ key: 'sex', val: e })
+          this.applyConditionFunctions.sex = () => this.searchEmployeeActions.setConditions({ sex: e ? e.value : undefined })
         }
       />
     );
@@ -104,7 +104,7 @@ class EmployeeSearchBox extends Vue {
         return-object
         clearable
         onChange={(e: Employee.AttributeElement | undefined) =>
-          this.applyConditionFunctions.country = () => this.searchEmployeeActions.setConditions({ key: 'country', val: e })
+          this.applyConditionFunctions.country = () => this.searchEmployeeActions.setConditions({ country: e ? e.value : undefined })
         }
       />
     );

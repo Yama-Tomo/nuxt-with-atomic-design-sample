@@ -1,30 +1,23 @@
 import { DefineMutations } from 'vuex-type-helper';
 import defaultState, { IState } from './state';
-import { replace, swap } from '@/utils/variable';
-
-type ConditionKeyValuePair = {
-  [P in keyof IState]: { key: P; val: IState[P] }
-};
-
-export type setConditionArg = Exclude<
-  ConditionKeyValuePair[keyof ConditionKeyValuePair],
-  undefined
->;
+import { swap } from '@/utils/variable';
 
 export interface IMutations {
   resetState: undefined;
-  setConditions: setConditionArg;
+  setConditions: Partial<IState>;
 }
 
 export const mutations: DefineMutations<IMutations, IState> = {
   resetState(state) {
     const resetState = defaultState();
-    for (const key of Object.keys(state) as Array<keyof IState>) {
+    for (const key of Object.keys(state) as (keyof typeof state)[]) {
       swap(state, resetState, key);
     }
   },
   setConditions(state, args) {
-    replace(state, args.key, args.val);
+    for (const key of Object.keys(args) as (keyof typeof args)[]) {
+      swap(state, args, key);
+    }
   },
 };
 
