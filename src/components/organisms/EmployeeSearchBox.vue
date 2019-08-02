@@ -6,7 +6,6 @@ import VAutocomplete from '@/types/vuetify/VAutocomplete';
 import * as Employee from '@/store_modules/employee';
 import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
-import { NuxtAxiosInstance } from '@nuxtjs/axios';
 
 type Conditions = {
   group?: () => void;
@@ -22,7 +21,6 @@ class EmployeeSearchBox extends Vue {
   @Prop({ required: true, type: Object }) conditions!: SearchEmployee.IState;
   @Prop({ required: true, type: Object }) employeeActions!: ActionTree<Employee.IActions>;
   @Prop({ required: true, type: Object }) searchActions!: ActionTree<SearchEmployee.IActions>;
-  @Prop({ required: true, type: Function }) axios!: NuxtAxiosInstance;
   applyConditionFunctions: Conditions = {};
 
   onClick() {
@@ -45,7 +43,7 @@ class EmployeeSearchBox extends Vue {
     if (attrs === undefined) {
       this.employeeActions.setAttribute({ branches: [] });
     } else {
-      this.employeeActions.updateBranches({ axios: this.axios, groupId: attrs.value });
+      this.employeeActions.updateBranches(attrs.value);
     }
   }
 
@@ -137,7 +135,7 @@ class EmployeeSearchBox extends Vue {
   }
 }
 
-type Props = Pick<EmployeeSearchBox, 'employeeAttrs' | 'axios' | 'searchActions' | 'employeeActions' | 'conditions'>;
+type Props = Pick<EmployeeSearchBox, 'employeeAttrs' | 'searchActions' | 'employeeActions' | 'conditions'>;
 
 interface Slots {
   customLayout: {
