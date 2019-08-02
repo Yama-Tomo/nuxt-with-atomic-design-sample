@@ -19,9 +19,10 @@ type Conditions = {
 @Component
 class EmployeeSearchBox extends Vue {
   @Prop({ required: true, type: Object }) employeeAttrs!: Employee.IState['attributes'];
+  @Prop({ required: true, type: Object }) conditions!: SearchEmployee.IState;
+  @Prop({ required: true, type: Object }) employeeActions!: ActionTree<Employee.IActions>;
   @Prop({ required: true, type: Object }) searchActions!: ActionTree<SearchEmployee.IActions>;
   @Prop({ required: true, type: Function }) axios!: NuxtAxiosInstance;
-  @Prop({ required: true, type: Object }) employeeActions!: ActionTree<Employee.IActions>;
   applyConditionFunctions: Conditions = {};
 
   onClick() {
@@ -53,6 +54,7 @@ class EmployeeSearchBox extends Vue {
       <VAutocomplete
         label="グループ"
         items={this.employeeAttrs.groups}
+        value={this.conditions.group}
         item-text="label"
         item-value="value"
         return-object
@@ -65,6 +67,7 @@ class EmployeeSearchBox extends Vue {
       <VAutocomplete
         label="部署"
         items={this.employeeAttrs.branches}
+        value={this.conditions.branch}
         item-text="label"
         item-value="value"
         return-object
@@ -78,6 +81,7 @@ class EmployeeSearchBox extends Vue {
     const name = () => (
       <VTextField
         label="氏名"
+        value={this.conditions.name}
         onChange={(e: string | undefined) =>
           this.applyConditionFunctions.name = () => this.searchActions.setConditions({ name: e })
         }
@@ -88,6 +92,7 @@ class EmployeeSearchBox extends Vue {
       <VAutocomplete
         label="性別"
         value={this.conditions.sex}
+        items={this.employeeAttrs.sex}
         item-text="label"
         item-value="value"
         return-object
@@ -102,6 +107,7 @@ class EmployeeSearchBox extends Vue {
       <VAutocomplete
         label="国籍"
         value={this.conditions.country}
+        items={this.employeeAttrs.countries}
         item-text="label"
         item-value="value"
         return-object
@@ -131,7 +137,7 @@ class EmployeeSearchBox extends Vue {
   }
 }
 
-type Props = Pick<EmployeeSearchBox, 'employeeAttrs' | 'axios' | 'searchActions' | 'employeeActions'>;
+type Props = Pick<EmployeeSearchBox, 'employeeAttrs' | 'axios' | 'searchActions' | 'employeeActions' | 'conditions'>;
 
 interface Slots {
   customLayout: {
