@@ -16,14 +16,9 @@ export const actions: DefineActions<IActions, IState, IMutations> = {
   updateBranches: async ({ commit }, args) => {
     const request = new Request(args.axios);
     const data = await request.send({ groupId: args.groupId });
+    const branches = data.map(d => ({ label: d.name, value: d.id }));
 
-    commit('setAttribute', {
-      key: 'branches',
-      val: data.map(d => ({
-        label: d.name,
-        value: d.id,
-      })),
-    });
+    commit('setAttribute', { branches });
   },
 };
 

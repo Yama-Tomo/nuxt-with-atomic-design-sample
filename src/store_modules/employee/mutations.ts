@@ -1,13 +1,10 @@
 import { DefineMutations } from 'vuex-type-helper';
-import defaultState, { IState, AttributeElement } from './state';
+import defaultState, { IState } from './state';
 import { swap } from '@/utils/variable';
 
 export interface IMutations {
   resetState: undefined;
-  setAttribute: {
-    key: keyof IState['attributes'];
-    val: AttributeElement[];
-  };
+  setAttribute: Partial<IState['attributes']>;
 }
 
 export const mutations: DefineMutations<IMutations, IState> = {
@@ -18,7 +15,10 @@ export const mutations: DefineMutations<IMutations, IState> = {
     }
   },
   setAttribute(state, args) {
-    state.attributes[args.key] = args.val;
+    const target = state.attributes;
+    for (const key of Object.keys(args) as (keyof typeof args)[]) {
+      swap(target, args, key);
+    }
   },
 };
 

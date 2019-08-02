@@ -50,7 +50,7 @@ class EmployeeSearchBox extends Vue {
           this.searchEmployeeActions.setConditions({ key: 'branch', val: undefined });
 
           if (e === undefined) {
-            this.employeeActions.setAttribute({ key: 'branches', val: [] });
+            this.employeeActions.setAttribute({ branches: [] });
           } else {
             this.employeeActions.updateBranches({ axios: this.axios, groupId: e.value });
           }
