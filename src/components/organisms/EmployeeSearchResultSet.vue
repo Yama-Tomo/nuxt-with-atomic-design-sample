@@ -6,8 +6,10 @@ import * as Employee from '@/store_modules/employee';
 import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
 
-type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs']
-type Pagination = Parameters<NonNullable<NonNullable<TsxAttrs['on']>['update:pagination']>>[0];
+type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs'];
+type Pagination = Parameters<
+  NonNullable<NonNullable<TsxAttrs['on']>['update:pagination']>
+>[0];
 interface Employee {
   id: number;
   firstName: string;
@@ -32,9 +34,14 @@ const headers = (): TsxAttrs['headers'] => [
   { text: '国籍', value: 'country', align: 'center' },
 ];
 
-const decorate = (employee: Employee, employeeAttrs: Employee.IState['attributes']) => {
+const decorate = (
+  employee: Employee,
+  employeeAttrs: Employee.IState['attributes']
+) => {
   const sex = employeeAttrs.sex.find(v => v.value === employee.sex);
-  const country = employeeAttrs.countries.find(v => v.value === employee.country);
+  const country = employeeAttrs.countries.find(
+    v => v.value === employee.country
+  );
 
   return {
     ...employee,
@@ -53,9 +60,15 @@ const decorate = (employee: Employee, employeeAttrs: Employee.IState['attributes
 @Component
 class EmployeeSearchResultSet extends Vue {
   @Prop({ required: true, type: Object }) employee!: Employee.IState;
-  @Prop({ required: true, type: Object }) searchEmployee!: SearchEmployee.IState;
-  @Prop({ required: true, type: Object }) actions!: ActionTree<SearchEmployee.IActions>;
-  @Prop({ required: true, type: Object }) dataSets!: { items: Employee[]; totalCount: number };
+  @Prop({ required: true, type: Object })
+  searchEmployee!: SearchEmployee.IState;
+  @Prop({ required: true, type: Object }) actions!: ActionTree<
+    SearchEmployee.IActions
+  >;
+  @Prop({ required: true, type: Object }) dataSets!: {
+    items: Employee[];
+    totalCount: number;
+  };
   paginationChangedTime = 0;
 
   onPaginationChanged(pagination: Pagination) {
@@ -99,17 +112,18 @@ class EmployeeSearchResultSet extends Vue {
                 <td class="text-xs-right">{employee.country}</td>
               </tr>
             );
-          }
+          },
         }}
-        on={
-          { 'update:pagination': this.onPaginationChanged }
-        }
+        on={{ 'update:pagination': this.onPaginationChanged }}
       />
     );
   }
 }
 
-type Props = Pick<EmployeeSearchResultSet, 'employee' | 'searchEmployee' | 'actions' | 'dataSets'>;
+type Props = Pick<
+  EmployeeSearchResultSet,
+  'employee' | 'searchEmployee' | 'actions' | 'dataSets'
+>;
 
 interface Events {
   onPaginationChanged: () => void;
