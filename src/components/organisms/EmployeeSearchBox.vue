@@ -6,151 +6,82 @@ import VAutocomplete from '@/types/vuetify/VAutocomplete';
 import * as Employee from '@/store_modules/employee';
 import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
+import SearchBoxContainer, { Slots } from '@/components/organisms/ecosystems/EmployeeSearchBoxContainer.vue';
 
-type Conditions = {
-  group?: () => void;
-  branch?: () => void;
-  name?: () => void;
-  sex?: () => void;
-  country?: () => void;
-}
-
-@Component
+@Component({
+  components: {
+    SearchBoxContainer,
+  },
+})
 class EmployeeSearchBox extends Vue {
   @Prop({ required: true, type: Object }) employeeAttrs!: Employee.IState['attributes'];
   @Prop({ required: true, type: Object }) conditions!: SearchEmployee.IState;
   @Prop({ required: true, type: Object }) employeeActions!: ActionTree<Employee.IActions>;
   @Prop({ required: true, type: Object }) searchActions!: ActionTree<SearchEmployee.IActions>;
-  applyConditionFunctions: Conditions = {};
-
-  onClick() {
-    (Object.keys(this.applyConditionFunctions) as (keyof Conditions)[]).forEach(k => {
-      const func = this.applyConditionFunctions[k];
-      if (func) {
-        func();
-      }
-    });
-    this.applyConditionFunctions = {};
-    this.searchActions.setConditions({ page: 1 });
-    this.$emit('click');
-  }
-
-  updateBranchOptions(attrs: Employee.AttributeElement | undefined) {
-    this.applyConditionFunctions.group = () =>
-      this.searchActions.setConditions({ group: attrs ? attrs.value : undefined });
-    this.searchActions.setConditions({ branch: undefined });
-
-    if (attrs === undefined) {
-      this.employeeActions.setAttribute({ branches: [] });
-    } else {
-      this.employeeActions.updateBranches(attrs.value);
-    }
-  }
 
   render() {
-    const group = () => (
-      <VAutocomplete
-        label="グループ"
-        items={this.employeeAttrs.groups}
-        value={this.conditions.group}
-        item-text="label"
-        item-value="value"
-        return-object
-        clearable
-        onChange={this.updateBranchOptions}
-      />
-    );
-
-    const branch = () => (
-      <VAutocomplete
-        label="部署"
-        items={this.employeeAttrs.branches}
-        value={this.conditions.branch}
-        item-text="label"
-        item-value="value"
-        return-object
-        clearable
-        onChange={(e: Employee.AttributeElement | undefined) =>
-          this.applyConditionFunctions.branch = () => this.searchActions.setConditions({ branch: e ? e.value : undefined })
-        }
-      />
-    );
-
-    const name = () => (
-      <VTextField
-        label="氏名"
-        value={this.conditions.name}
-        onChange={(e: string | undefined) =>
-          this.applyConditionFunctions.name = () => this.searchActions.setConditions({ name: e })
-        }
-      />
-    );
-
-    const sex = () => (
-      <VAutocomplete
-        label="性別"
-        value={this.conditions.sex}
-        items={this.employeeAttrs.sex}
-        item-text="label"
-        item-value="value"
-        return-object
-        clearable
-        onChange={(e: Employee.AttributeElement | undefined) =>
-          this.applyConditionFunctions.sex = () => this.searchActions.setConditions({ sex: e ? e.value : undefined })
-        }
-      />
-    );
-
-    const country = () => (
-      <VAutocomplete
-        label="国籍"
-        value={this.conditions.country}
-        items={this.employeeAttrs.countries}
-        item-text="label"
-        item-value="value"
-        return-object
-        clearable
-        onChange={(e: Employee.AttributeElement | undefined) =>
-          this.applyConditionFunctions.country = () => this.searchActions.setConditions({ country: e ? e.value : undefined })
-        }
-      />
-    );
-
-    const button = () => <VBtn color="primary" onClick={this.onClick}>Search</VBtn>;
-
-    if (this.$scopedSlots.customLayout) {
-      return this.$scopedSlots.customLayout({ group, branch, name, sex, country, button });
-    }
-
-    return (
-      <div>
-        {group()}
-        {branch()}
-        {name()}
-        {sex()}
-        {country()}
-        {button()}
-      </div>
-    );
+    return <SearchBoxContainer
+      {...{props: this.$props as Props}}
+      onClick={() => this.$emit('click')}
+      scopedSlots={{render: (v: Slots['render']) => (
+          <div>
+            <VAutocomplete
+              label="グループ"
+              items={v.optionAttrs.groups}
+              value={v.conditions.group}
+              item-text="label"
+              item-value="value"
+              return-object
+              clearable
+              onChange={v.updateBranchOptions}
+            />
+            <VAutocomplete
+              label="部署"
+              items={v.optionAttrs.branches}
+              value={v.conditions.branch}
+              item-text="label"
+              item-value="value"
+              return-object
+              clearable
+              onChange={(e?: Employee.AttributeElement) => v.setCondition('branch', e)}
+            />
+            <VTextField
+              label="氏名"
+              value={v.conditions.name}
+              onChange={(e?: Employee.AttributeElement) => v.setCondition('name', e)}
+            />
+            <VAutocomplete
+              label="性別"
+              items={v.optionAttrs.sex}
+              value={v.conditions.sex}
+              item-text="label"
+              item-value="value"
+              return-object
+              clearable
+              onChange={(e?: Employee.AttributeElement) => v.setCondition('sex', e)}
+            />
+            <VAutocomplete
+              label="国籍"
+              items={v.optionAttrs.countries}
+              value={v.conditions.country}
+              item-text="label"
+              item-value="value"
+              return-object
+              clearable
+              onChange={(e?: Employee.AttributeElement) => v.setCondition('country', e)}
+            />
+            <VBtn color="primary" onClick={v.emitClick}>Search</VBtn>
+          </div>
+        )}}
+    />;
   }
 }
 
-type Props = Pick<EmployeeSearchBox, 'employeeAttrs' | 'searchActions' | 'employeeActions' | 'conditions'>;
+export type Props = Pick<EmployeeSearchBox, 'employeeAttrs' | 'searchActions' | 'employeeActions' | 'conditions'>;
 
-interface Slots {
-  customLayout: {
-    group: () => void;
-    branch: () => void;
-    name: () => void;
-    sex: () => void;
-    country: () => void;
-    button: () => void;
-  }
-}
-
-interface Events {
+export interface Events {
   onClick: () => void;
 }
 
-export default vts.ofType<Props, Events, Slots>().convert(EmployeeSearchBox);
+export default vts.ofType<Props, Events, {}>().convert(EmployeeSearchBox);
 </script>
