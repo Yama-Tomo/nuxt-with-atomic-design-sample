@@ -5,8 +5,7 @@
   "scripts": {
     "lint": "eslint --ext .ts,.tsx,.js,.vue --format codeframe --color",
     "dev": "nuxt",
-    "test": "NUXT_PORT=4444 jest",
-    "build": "nuxt build && tsc -p tsconfig.nuxt-config.json",
+    "build": "nuxt build",
     "start": "nuxt start",
     "lint-staged": "lint-staged"
   },
