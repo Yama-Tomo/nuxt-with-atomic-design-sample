@@ -60,9 +60,8 @@ const decorate = (
 @Component
 class EmployeeSearchResultSet extends Vue {
   @Prop({ required: true, type: Object }) employee!: Employee.IState;
-  @Prop({ required: true, type: Object })
-  searchEmployee!: SearchEmployee.IState;
-  @Prop({ required: true, type: Object }) actions!: ActionTree<
+  @Prop({ required: true, type: Object }) conditions!: SearchEmployee.IState;
+  @Prop({ required: true, type: Object }) searchActions!: ActionTree<
     SearchEmployee.IActions
   >;
   @Prop({ required: true, type: Object }) dataSets!: {
@@ -72,7 +71,7 @@ class EmployeeSearchResultSet extends Vue {
   paginationChangedTime = 0;
 
   onPaginationChanged(pagination: Pagination) {
-    this.actions.setConditions(pagination);
+    this.searchActions.setConditions(pagination);
 
     this.paginationChangedTime++;
     if (this.paginationChangedTime !== 1) {
@@ -86,8 +85,8 @@ class EmployeeSearchResultSet extends Vue {
     return (
       <VDataTable
         items={this.dataSets.items}
-        totalItems={this.dataSets.totalCount}
-        pagination={pagination(this.searchEmployee)}
+        totalItems={this.dataSets.count}
+        pagination={pagination(this.conditions)}
         headers={headers()}
         scopedSlots={{
           items: (props: { item: Employee }) => {
@@ -122,7 +121,7 @@ class EmployeeSearchResultSet extends Vue {
 
 type Props = Pick<
   EmployeeSearchResultSet,
-  'employee' | 'searchEmployee' | 'actions' | 'dataSets'
+  'employee' | 'conditions' | 'searchActions' | 'dataSets'
 >;
 
 interface Events {
