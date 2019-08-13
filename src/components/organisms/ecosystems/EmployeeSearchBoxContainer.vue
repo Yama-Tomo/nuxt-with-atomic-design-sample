@@ -4,6 +4,7 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import * as Employee from '@/store_modules/employee';
 import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
+import { keys } from '@/utils/object';
 
 type Conditions = {
   group?: () => void;
@@ -39,9 +40,11 @@ class EmployeeSearchBoxContainer extends Vue {
     this.$emit('click');
   }
 
-  setCondition(type: Required<keyof Conditions>, value?: string) {
-    this.applyConditionFunctions[type] = () =>
-      this.searchActions.setConditions({ [type]: value });
+  registerConditions(conditions: SearchEmployee.IActions['setConditions']) {
+    keys(conditions).forEach(name => {
+      this.applyConditionFunctions[name] = () =>
+        this.searchActions.setConditions({ [name]: conditions[name] });
+    });
   }
 
   updateBranchOptions(attrs?: Employee.AttributeElement) {
@@ -66,7 +69,7 @@ class EmployeeSearchBoxContainer extends Vue {
     const slotArgs: Slots['render'] = {
       conditions: this.conditions,
       optionAttrs: this.employeeAttrs,
-      setCondition: this.setCondition,
+      registerConditions: this.registerConditions,
       emitClick: this.emitClick,
       updateBranchOptions: this.updateBranchOptions,
     };
@@ -88,7 +91,7 @@ export interface Slots {
   render: {
     conditions: EmployeeSearchBoxContainer['conditions'];
     optionAttrs: EmployeeSearchBoxContainer['employeeAttrs'];
-    setCondition: EmployeeSearchBoxContainer['setCondition'];
+    registerConditions: EmployeeSearchBoxContainer['registerConditions'];
     emitClick: EmployeeSearchBoxContainer['emitClick'];
     updateBranchOptions: EmployeeSearchBoxContainer['updateBranchOptions'];
   };
