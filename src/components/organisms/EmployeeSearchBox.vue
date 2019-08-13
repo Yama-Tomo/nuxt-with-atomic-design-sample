@@ -53,15 +53,13 @@ class EmployeeSearchBox extends Vue {
                 return-object
                 clearable
                 onChange={(e?: Employee.AttributeElement) =>
-                  v.setCondition('branch', e)
+                  v.setCondition('branch', e.value)
                 }
               />
               <VTextField
                 label="氏名"
                 value={v.conditions.name}
-                onChange={(e?: Employee.AttributeElement) =>
-                  v.setCondition('name', e)
-                }
+                onChange={(e?: string) => v.setCondition('name', e)}
               />
               <VAutocomplete
                 label="性別"
@@ -72,7 +70,7 @@ class EmployeeSearchBox extends Vue {
                 return-object
                 clearable
                 onChange={(e?: Employee.AttributeElement) =>
-                  v.setCondition('sex', e)
+                  v.setCondition('sex', e.value)
                 }
               />
               <VAutocomplete
@@ -84,7 +82,7 @@ class EmployeeSearchBox extends Vue {
                 return-object
                 clearable
                 onChange={(e?: Employee.AttributeElement) =>
-                  v.setCondition('country', e)
+                  v.setCondition('country', e.value)
                 }
               />
               <VBtn color="primary" onClick={v.emitClick}>

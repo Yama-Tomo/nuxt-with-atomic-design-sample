@@ -39,11 +39,7 @@ class EmployeeSearchBoxContainer extends Vue {
     this.$emit('click');
   }
 
-  setCondition(
-    type: Required<keyof Conditions>,
-    e?: Employee.AttributeElement
-  ) {
-    const value = e ? e.value : undefined;
+  setCondition(type: Required<keyof Conditions>, value?: string) {
     this.applyConditionFunctions[type] = () =>
       this.searchActions.setConditions({ [type]: value });
   }
