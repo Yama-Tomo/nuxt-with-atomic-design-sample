@@ -23,7 +23,7 @@ class EmployeeSearchBoxContainer extends Vue {
   >;
   applyConditionFunctions: Conditions = {};
 
-  emitClick() {
+  applyConditions() {
     keys(this.applyConditionFunctions).forEach(name => {
       const func = this.applyConditionFunctions[name];
       func && func();
@@ -31,7 +31,6 @@ class EmployeeSearchBoxContainer extends Vue {
 
     this.applyConditionFunctions = {};
     this.searchActions.setConditions({ page: 1 });
-    this.$emit('click');
   }
 
   registerConditions(conditions: SearchEmployee.IActions['setConditions']) {
@@ -64,7 +63,7 @@ class EmployeeSearchBoxContainer extends Vue {
       conditions: this.conditions,
       optionAttrs: this.employeeAttrs,
       registerConditions: this.registerConditions,
-      emitClick: this.emitClick,
+      applyConditions: this.applyConditions,
       updateBranchOptions: this.updateBranchOptions,
     };
 
@@ -86,7 +85,7 @@ export interface Slots {
     conditions: EmployeeSearchBoxContainer['conditions'];
     optionAttrs: EmployeeSearchBoxContainer['employeeAttrs'];
     registerConditions: EmployeeSearchBoxContainer['registerConditions'];
-    emitClick: EmployeeSearchBoxContainer['emitClick'];
+    applyConditions: EmployeeSearchBoxContainer['applyConditions'];
     updateBranchOptions: EmployeeSearchBoxContainer['updateBranchOptions'];
   };
 }

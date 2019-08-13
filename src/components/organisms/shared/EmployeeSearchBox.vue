@@ -30,7 +30,6 @@ class EmployeeSearchBox extends Vue {
     return (
       <SearchBoxContainer
         {...{ props: this.$props as Props }}
-        onClick={() => this.$emit('click')}
         scopedSlots={{
           render: (v: Slots['render']) => (
             <div>
@@ -85,7 +84,13 @@ class EmployeeSearchBox extends Vue {
                   v.registerConditions({ country: e ? e.value : undefined })
                 }
               />
-              <VBtn color="primary" onClick={v.emitClick}>
+              <VBtn
+                color="primary"
+                onClick={() => {
+                  v.applyConditions();
+                  this.$emit('click');
+                }}
+              >
                 Search
               </VBtn>
             </div>
