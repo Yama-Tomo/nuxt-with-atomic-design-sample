@@ -2,10 +2,10 @@
 import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { VDataTable } from 'vuetify-tsx';
-import * as Employee from '@/store_modules/employee';
-import * as SearchEmployee from '@/store_modules/search/employee';
-import { ActionTree } from '@/store_modules/store_helper';
-import { DataSets } from '@/pages/index.vue';
+import * as Employee from '../../../store_modules/employee';
+import * as SearchEmployee from '../../../store_modules/search/employee';
+import { ActionTree } from '../../../store_modules/store_helper';
+import { DataSets } from '../../../pages/index.vue';
 
 type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs'];
 type Pagination = Parameters<
