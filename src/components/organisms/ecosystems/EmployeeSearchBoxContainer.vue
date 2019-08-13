@@ -7,11 +7,7 @@ import { ActionTree } from '@/store_modules/store_helper';
 import { keys } from '@/utils/object';
 
 type Conditions = {
-  group?: () => void;
-  branch?: () => void;
-  name?: () => void;
-  sex?: () => void;
-  country?: () => void;
+  [P in keyof SearchEmployee.IActions['setConditions']]: () => void
 };
 
 @Component
@@ -28,12 +24,10 @@ class EmployeeSearchBoxContainer extends Vue {
   applyConditionFunctions: Conditions = {};
 
   emitClick() {
-    (Object.keys(this.applyConditionFunctions) as (keyof Conditions)[]).forEach(
-      k => {
-        const func = this.applyConditionFunctions[k];
-        func && func();
-      }
-    );
+    keys(this.applyConditionFunctions).forEach(name => {
+      const func = this.applyConditionFunctions[name];
+      func && func();
+    });
 
     this.applyConditionFunctions = {};
     this.searchActions.setConditions({ page: 1 });
