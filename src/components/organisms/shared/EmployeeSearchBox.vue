@@ -1,7 +1,7 @@
 <script lang="tsx">
 import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
-import { VBtn, VTextField } from 'vuetify-tsx';
+import { VBtn, VTextField, VContainer, VLayout, VFlex } from 'vuetify-tsx';
 import VAutocomplete from '../../../types/vuetify/VAutocomplete';
 import * as Employee from '../../../store_modules/employee';
 import * as SearchEmployee from '../../../store_modules/search/employee';
@@ -32,68 +32,86 @@ class EmployeeSearchBox extends Vue {
         {...{ props: this.$props as Props }}
         scopedSlots={{
           render: (v: Slots['render']) => (
-            <div>
-              <VAutocomplete
-                label="グループ"
-                items={v.optionAttrs.groups}
-                value={v.conditions.group}
-                item-text="label"
-                item-value="value"
-                return-object
-                clearable
-                onChange={v.updateBranchOptions}
-              />
-              <VAutocomplete
-                label="部署"
-                items={v.optionAttrs.branches}
-                value={v.conditions.branch}
-                item-text="label"
-                item-value="value"
-                return-object
-                clearable
-                onChange={(e?: Employee.AttributeElement) =>
-                  v.registerConditions({ branch: e ? e.value : undefined })
-                }
-              />
-              <VTextField
-                label="氏名"
-                value={v.conditions.name}
-                onChange={(e?: string) => v.registerConditions({ name: e })}
-              />
-              <VAutocomplete
-                label="性別"
-                items={v.optionAttrs.sex}
-                value={v.conditions.sex}
-                item-text="label"
-                item-value="value"
-                return-object
-                clearable
-                onChange={(e?: Employee.AttributeElement) =>
-                  v.registerConditions({ sex: e ? e.value : undefined })
-                }
-              />
-              <VAutocomplete
-                label="国籍"
-                items={v.optionAttrs.countries}
-                value={v.conditions.country}
-                item-text="label"
-                item-value="value"
-                return-object
-                clearable
-                onChange={(e?: Employee.AttributeElement) =>
-                  v.registerConditions({ country: e ? e.value : undefined })
-                }
-              />
-              <VBtn
-                color="primary"
-                onClick={() => {
-                  v.applyConditions();
-                  this.$emit('click');
-                }}
-              >
-                Search
-              </VBtn>
-            </div>
+            <VContainer grid-list-md>
+              <VLayout row wrap>
+                <VFlex md6 sm6 xs12>
+                  <VAutocomplete
+                    label="グループ"
+                    items={v.optionAttrs.groups}
+                    value={v.conditions.group}
+                    item-text="label"
+                    item-value="value"
+                    return-object
+                    clearable
+                    onChange={v.updateBranchOptions}
+                  />
+                </VFlex>
+                <VFlex md6 sm6 xs12>
+                  <VAutocomplete
+                    label="部署"
+                    items={v.optionAttrs.branches}
+                    value={v.conditions.branch}
+                    item-text="label"
+                    item-value="value"
+                    return-object
+                    clearable
+                    onChange={(e?: Employee.AttributeElement) =>
+                      v.registerConditions({ branch: e ? e.value : undefined })
+                    }
+                  />
+                </VFlex>
+              </VLayout>
+              <VLayout row wrap>
+                <VFlex md12 xs12>
+                  <VTextField
+                    label="氏名"
+                    value={v.conditions.name}
+                    onChange={(e?: string) => v.registerConditions({ name: e })}
+                  />
+                </VFlex>
+              </VLayout>
+              <VLayout row wrap>
+                <VFlex md6 sm6 xs12>
+                  <VAutocomplete
+                    label="性別"
+                    items={v.optionAttrs.sex}
+                    value={v.conditions.sex}
+                    item-text="label"
+                    item-value="value"
+                    return-object
+                    clearable
+                    onChange={(e?: Employee.AttributeElement) =>
+                      v.registerConditions({ sex: e ? e.value : undefined })
+                    }
+                  />
+                </VFlex>
+                <VFlex md6 sm6 xs12>
+                  <VAutocomplete
+                    label="国籍"
+                    items={v.optionAttrs.countries}
+                    value={v.conditions.country}
+                    item-text="label"
+                    item-value="value"
+                    return-object
+                    clearable
+                    onChange={(e?: Employee.AttributeElement) =>
+                      v.registerConditions({ country: e ? e.value : undefined })
+                    }
+                  />
+                </VFlex>
+              </VLayout>
+              <div class="text-xs-right">
+                <VBtn
+                  color="primary"
+                  onClick={() => {
+                    v.applyConditions();
+                    this.$emit('click');
+                  }}
+                >
+                  Search
+                </VBtn>
+              </div>
+            </VContainer>
           ),
         }}
       />
@@ -112,3 +130,14 @@ export interface Events {
 
 export default vts.ofType<Props, Events, {}>().convert(EmployeeSearchBox);
 </script>
+
+<style lang="scss" scoped>
+.container {
+  max-width: none;
+  padding: 0;
+
+  button {
+    margin: 0;
+  }
+}
+</style>
