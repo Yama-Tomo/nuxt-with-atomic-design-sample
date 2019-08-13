@@ -5,19 +5,12 @@ import { VDataTable } from 'vuetify-tsx';
 import * as Employee from '@/store_modules/employee';
 import * as SearchEmployee from '@/store_modules/search/employee';
 import { ActionTree } from '@/store_modules/store_helper';
+import { DataSets } from '@/pages/index.vue';
 
 type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs'];
 type Pagination = Parameters<
   NonNullable<NonNullable<TsxAttrs['on']>['update:pagination']>
 >[0];
-interface Employee {
-  id: number;
-  firstName: string;
-  lastName: string;
-  belongs: Array<{ group: string; branches: string[] }>;
-  sex: number;
-  country: number;
-}
 
 const pagination = (conditions: SearchEmployee.IState) => ({
   descending: conditions.descending,
@@ -35,7 +28,7 @@ const headers = (): TsxAttrs['headers'] => [
 ];
 
 const decorate = (
-  employee: Employee,
+  employee: DataSets['items'][number],
   employeeAttrs: Employee.IState['attributes']
 ) => {
   const sex = employeeAttrs.sex.find(v => v.value === employee.sex);
@@ -64,10 +57,7 @@ class EmployeeSearchResultSet extends Vue {
   @Prop({ required: true, type: Object }) searchActions!: ActionTree<
     SearchEmployee.IActions
   >;
-  @Prop({ required: true, type: Object }) dataSets!: {
-    items: Employee[];
-    totalCount: number;
-  };
+  @Prop({ required: true, type: Object }) dataSets!: DataSets;
   paginationChangedTime = 0;
 
   onPaginationChanged(pagination: Pagination) {
@@ -89,7 +79,7 @@ class EmployeeSearchResultSet extends Vue {
         pagination={pagination(this.conditions)}
         headers={headers()}
         scopedSlots={{
-          items: (props: { item: Employee }) => {
+          items: (props: { item: DataSets['items'][number] }) => {
             const employee = decorate(props.item, this.employee.attributes);
             return (
               <tr>

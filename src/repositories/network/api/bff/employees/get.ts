@@ -11,7 +11,7 @@ interface DataElement {
 }
 
 type Attribute = Array<{ id: number; name: string }>;
-interface SuccessResponse {
+export interface SuccessResponse {
   dataSets: DataElement[];
   totalCount: number;
   groups: Attribute;
