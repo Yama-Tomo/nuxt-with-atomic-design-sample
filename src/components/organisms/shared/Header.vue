@@ -1,16 +1,25 @@
 <script lang="tsx">
 import * as vts from 'vue-tsx-support';
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { VToolbar, VToolbarItems, VIcon, VBtn } from 'vuetify-tsx';
 
 @Component
 class Header extends Vue {
+  @Prop({ required: true, type: String }) route!: string;
+
   render() {
     return (
       <VToolbar dark color="#24292e">
         <VToolbarItems>
           <VIcon large>people</VIcon>
-          <VBtn flat>Employees</VBtn>
+          <VBtn
+            flat
+            class={this.route === 'index' ? 'v-btn--active' : ''}
+            nuxt
+            to="/"
+          >
+            Employees
+          </VBtn>
           <VBtn flat>Groups</VBtn>
           <VBtn flat>Branches</VBtn>
         </VToolbarItems>

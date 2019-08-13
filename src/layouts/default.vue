@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header />
+    <Header :route="$route.name" />
     <v-content>
       <v-container fluid>
         <router-view />
