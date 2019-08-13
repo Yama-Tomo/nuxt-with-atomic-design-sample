@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  backend:
+    build:
+      dockerfile: ../docker/backend/Dockerfile.prod
+    environment:
+      DATABASE_PATH: tmp/production.sqlite3
+      RAILS_ENV: production
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile.prod
+    command: yarn start

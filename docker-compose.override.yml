@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  backend:
+    volumes:
+      - ./__api:/app:cached
+      - bundle_vol:/usr/local/bundle:cached
+      - /app/tmp
+
+  frontend:
+    image: node:12.6-alpine
+    volumes:
+      - .:/app:cached
+      - node_modules_vol:/app/node_modules:cached
+      - /app/__api
+      - /app/.git
+    command: /bin/sh -c "yarn --no-progress && yarn dev"
+
+volumes:
+  node_modules_vol:
+    driver: local
+  bundle_vol:
+    driver: local

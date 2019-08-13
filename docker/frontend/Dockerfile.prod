@@ -1,0 +1,6 @@
+FROM node:12.6-alpine
+
+WORKDIR /app
+COPY . /app
+RUN yarn --no-progress && yarn build 
+CMD ["yarn", "start"]

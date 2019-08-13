@@ -1,0 +1,16 @@
+FROM ruby:2.6.3-alpine as builder
+
+WORKDIR /tmp
+RUN apk add --no-cache --virtual .build-deps ruby-dev libc-dev musl-dev g++ make sqlite-dev tzdata
+COPY Gemfile Gemfile
+COPY Gemfile.lock Gemfile.lock
+RUN bundle install --jobs=$(getconf _NPROCESSORS_ONLN)
+
+FROM ruby:2.6.3-alpine
+
+RUN apk --update add sqlite-dev tzdata
+
+WORKDIR /app
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+COPY . /app
+CMD ["sh", "-c", "bundle exec rake db:migrate && bundle exec rake db:seed && bundle exec rails s -b 0.0.0.0"]

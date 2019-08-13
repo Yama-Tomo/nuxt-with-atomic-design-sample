@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  backend:
+    build:
+      context: __api
+      dockerfile: ../docker/backend/Dockerfile
+    environment:
+      DATABASE_PATH: tmp/development.sqlite3
+      RAILS_ENV: development
+
+  frontend:
+    environment:
+      BACKEND_HOST: http://backend:3000
+      NUXT_HOST: 0.0.0.0
+    working_dir: /app
+    ports:
+      - '3300:3300'
+    depends_on:
+      - backend
