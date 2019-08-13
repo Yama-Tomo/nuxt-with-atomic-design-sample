@@ -10,9 +10,14 @@ interface DataElement {
   country: number;
 }
 
-interface SuccessResponse {
+type Attribute = Array<{ id: number; name: string }>;
+export interface SuccessResponse {
   dataSets: DataElement[];
   totalCount: number;
+  groups: Attribute;
+  branches: Attribute;
+  sex: Attribute;
+  countries: Attribute;
 }
 
 interface RequestParams {
@@ -27,17 +32,9 @@ interface RequestParams {
   rowsPerPage?: number;
 }
 
-export class Request {
-  public readonly endpoint = `${process.env.baseUrl}/api/employees`;
-  private httpClient: NuxtAxiosInstance;
+export const send = async (axios: NuxtAxiosInstance, params: RequestParams) => {
+  const endpoint = `${process.env.baseUrl}/api/bff/employees`;
+  const response = await axios.$get(endpoint, { params });
 
-  public constructor(axios: NuxtAxiosInstance) {
-    this.httpClient = axios;
-  }
-
-  public async send(params: RequestParams) {
-    const response = await this.httpClient.$get(this.endpoint, { params });
-
-    return camelizeKeysDeep(response) as SuccessResponse;
-  }
-}
+  return camelizeKeysDeep(response) as SuccessResponse;
+};
