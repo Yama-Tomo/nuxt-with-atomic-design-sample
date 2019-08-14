@@ -6,6 +6,7 @@ services:
     environment:
       DATABASE_PATH: tmp/production.sqlite3
       RAILS_ENV: production
+      RAILS_MASTER_KEY: 687247c6720babc12ef69f1c40e423bd
 
   frontend:
     build:
