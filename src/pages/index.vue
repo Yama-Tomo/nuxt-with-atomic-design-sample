@@ -1,11 +1,10 @@
 <script lang="tsx">
 import * as vts from 'vue-tsx-support';
 import { Component, Vue } from 'nuxt-property-decorator';
-import { getActions, getState } from '@/store_modules/store_helper';
+import { getActions, getState } from '@/store/helper';
 import { DataSets, QueryString } from '@/pages/index.vue';
 import Template from '@/components/templates/index.vue';
 import { Nuxt } from '@/types/nuxt';
-import { modules } from '@/store_modules/module_mapper';
 import * as BffApiRequest from '@/api/bff/employees/get';
 import * as EmployeeApiRequest from '@/api/employees/get';
 
@@ -59,30 +58,25 @@ class Index extends Vue {
   render() {
     return (
       <Template
-        employeeActions={getActions(this.$store, modules.employee)}
-        employee={getState(this.$store, modules.employee)}
-        searchActions={getActions(
-          this.$store,
-          modules.search.employee.conditions
-        )}
-        conditions={getState(this.$store, modules.search.employee.conditions)}
+        employeeActions={getActions('employee', this.$store)}
+        employee={getState('employee', this.$store)}
+        searchActions={getActions('search/employee', this.$store)}
+        conditions={getState('search/employee', this.$store)}
         dataSets={this.data}
       />
     );
   }
 
   async asyncData(ctx: Nuxt.Context): Promise<{ data: DataSets }> {
-    const employeeActions = getActions(ctx.store, modules.employee);
-    const searchActions = getActions(
-      ctx.store,
-      modules.search.employee.conditions
-    );
+    const employeeActions = getActions('employee', ctx.store);
+    const searchActions = getActions('search/employee', ctx.store);
     const conditions = convertRequestParams(ctx.query as QueryString);
 
     searchActions.setConditions(conditions);
 
     const requiredCallBff =
-      getState(ctx.store, modules.employee).attributes.groups.length === 0;
+      getState('employee', ctx.store).attributes.groups.length === 0;
+
     if (requiredCallBff) {
       const response = await BffApiRequest.send(ctx.app.$axios, conditions);
       employeeActions.setAttribute(convertEmployeeAttrs(response));

@@ -2,13 +2,12 @@
 import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { VBtn, VTextField, VContainer, VLayout, VFlex } from 'vuetify-tsx';
-import VAutocomplete from '../../../types/vuetify/VAutocomplete';
-import * as Employee from '../../../store_modules/employee';
-import * as SearchEmployee from '../../../store_modules/search/employee';
-import { ActionTree } from '../../../store_modules/store_helper';
+import VAutocomplete from '@/types/vuetify/VAutocomplete';
 import SearchBoxContainer, {
   Slots,
 } from '../ecosystems/EmployeeSearchBoxContainer.vue';
+import { AttributeElement } from '@/store/employee';
+import { StateTree, ActionTree } from '@/store/module_mapper';
 
 @Component({
   components: {
@@ -17,14 +16,16 @@ import SearchBoxContainer, {
 })
 class EmployeeSearchBox extends Vue {
   @Prop({ required: true, type: Object })
-  employeeAttrs!: Employee.IState['attributes'];
-  @Prop({ required: true, type: Object }) conditions!: SearchEmployee.IState;
-  @Prop({ required: true, type: Object }) employeeActions!: ActionTree<
-    Employee.IActions
-  >;
-  @Prop({ required: true, type: Object }) searchActions!: ActionTree<
-    SearchEmployee.IActions
-  >;
+  employeeAttrs!: StateTree['employee']['attributes'];
+
+  @Prop({ required: true, type: Object })
+  conditions!: StateTree['search/employee'];
+
+  @Prop({ required: true, type: Object })
+  employeeActions!: ActionTree['employee'];
+
+  @Prop({ required: true, type: Object })
+  searchActions!: ActionTree['search/employee'];
 
   render() {
     return (
@@ -55,7 +56,7 @@ class EmployeeSearchBox extends Vue {
                     item-value="value"
                     return-object
                     clearable
-                    onChange={(e?: Employee.AttributeElement) =>
+                    onChange={(e?: AttributeElement) =>
                       v.registerConditions({ branch: e ? e.value : undefined })
                     }
                   />
@@ -80,7 +81,7 @@ class EmployeeSearchBox extends Vue {
                     item-value="value"
                     return-object
                     clearable
-                    onChange={(e?: Employee.AttributeElement) =>
+                    onChange={(e?: AttributeElement) =>
                       v.registerConditions({ sex: e ? e.value : undefined })
                     }
                   />
@@ -94,7 +95,7 @@ class EmployeeSearchBox extends Vue {
                     item-value="value"
                     return-object
                     clearable
-                    onChange={(e?: Employee.AttributeElement) =>
+                    onChange={(e?: AttributeElement) =>
                       v.registerConditions({ country: e ? e.value : undefined })
                     }
                   />

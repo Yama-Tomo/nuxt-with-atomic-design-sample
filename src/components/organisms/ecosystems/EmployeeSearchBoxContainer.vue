@@ -1,26 +1,29 @@
 <script lang="tsx">
 import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
-import * as Employee from '@/store_modules/employee';
-import * as SearchEmployee from '@/store_modules/search/employee';
-import { ActionTree } from '@/store_modules/store_helper';
 import { keys } from '@/utils/object';
+import { AttributeElement } from '@/store/employee';
+import { StateTree, ActionTree } from '@/store/module_mapper';
 
-type Conditions = {
-  [P in keyof SearchEmployee.IActions['setConditions']]: () => void
-};
+type ConditionArgs = Parameters<
+  ActionTree['search/employee']['setConditions']
+>[0];
+type Conditions = { [P in keyof ConditionArgs]: () => void };
 
 @Component
 class EmployeeSearchBoxContainer extends Vue {
   @Prop({ required: true, type: Object })
-  employeeAttrs!: Employee.IState['attributes'];
-  @Prop({ required: true, type: Object }) conditions!: SearchEmployee.IState;
-  @Prop({ required: true, type: Object }) employeeActions!: ActionTree<
-    Employee.IActions
-  >;
-  @Prop({ required: true, type: Object }) searchActions!: ActionTree<
-    SearchEmployee.IActions
-  >;
+  employeeAttrs!: StateTree['employee']['attributes'];
+
+  @Prop({ required: true, type: Object })
+  conditions!: StateTree['search/employee'];
+
+  @Prop({ required: true, type: Object })
+  employeeActions!: ActionTree['employee'];
+
+  @Prop({ required: true, type: Object })
+  searchActions!: ActionTree['search/employee'];
+
   applyConditionFunctions: Conditions = {};
 
   applyConditions() {
@@ -33,14 +36,14 @@ class EmployeeSearchBoxContainer extends Vue {
     this.searchActions.setConditions({ page: 1 });
   }
 
-  registerConditions(conditions: SearchEmployee.IActions['setConditions']) {
+  registerConditions(conditions: ConditionArgs) {
     keys(conditions).forEach(name => {
       this.applyConditionFunctions[name] = () =>
         this.searchActions.setConditions({ [name]: conditions[name] });
     });
   }
 
-  updateBranchOptions(attrs?: Employee.AttributeElement) {
+  updateBranchOptions(attrs?: AttributeElement) {
     this.applyConditionFunctions.group = () =>
       this.searchActions.setConditions({
         group: attrs ? attrs.value : undefined,

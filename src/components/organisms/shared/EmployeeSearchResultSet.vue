@@ -2,17 +2,16 @@
 import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { VDataTable } from 'vuetify-tsx';
-import * as Employee from '../../../store_modules/employee';
-import * as SearchEmployee from '../../../store_modules/search/employee';
-import { ActionTree } from '../../../store_modules/store_helper';
-import { DataSets } from '../../../pages/index.vue';
+import { DataSets } from '@/pages/index.vue';
+import { StateTree, ActionTree } from '@/store/module_mapper';
+import { fullName } from '@/store/employee';
 
 type TsxAttrs = InstanceType<typeof VDataTable>['_tsxattrs'];
 type Pagination = Parameters<
   NonNullable<NonNullable<TsxAttrs['on']>['update:pagination']>
 >[0];
 
-const pagination = (conditions: SearchEmployee.IState) => ({
+const pagination = (conditions: StateTree['search/employee']) => ({
   descending: conditions.descending,
   page: conditions.page,
   sortBy: conditions.sortBy,
@@ -29,7 +28,7 @@ const headers = (): TsxAttrs['headers'] => [
 
 const decorate = (
   employee: DataSets['items'][number],
-  employeeAttrs: Employee.IState['attributes']
+  employeeAttrs: StateTree['employee']['attributes']
 ) => {
   const sex = employeeAttrs.sex.find(v => v.value === employee.sex);
   const country = employeeAttrs.countries.find(
@@ -39,7 +38,7 @@ const decorate = (
   return {
     ...employee,
     ...{
-      fullName: Employee.fullName(
+      fullName: fullName(
         employee.firstName,
         employee.lastName,
         employee.country
@@ -52,11 +51,13 @@ const decorate = (
 
 @Component
 class EmployeeSearchResultSet extends Vue {
-  @Prop({ required: true, type: Object }) employee!: Employee.IState;
-  @Prop({ required: true, type: Object }) conditions!: SearchEmployee.IState;
-  @Prop({ required: true, type: Object }) searchActions!: ActionTree<
-    SearchEmployee.IActions
-  >;
+  @Prop({ required: true, type: Object }) employee!: StateTree['employee'];
+  @Prop({ required: true, type: Object })
+  conditions!: StateTree['search/employee'];
+
+  @Prop({ required: true, type: Object })
+  searchActions!: ActionTree['search/employee'];
+
   @Prop({ required: true, type: Object }) dataSets!: DataSets;
   paginationChangedTime = 0;
 

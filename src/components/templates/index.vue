@@ -1,15 +1,13 @@
 <script lang="tsx">
 import * as vts from 'vue-tsx-support';
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
-import * as Employee from '@/store_modules/employee';
-import * as SearchEmployee from '@/store_modules/search/employee';
-import { ActionTree } from '@/store_modules/store_helper';
 import { DataSets, QueryString } from '@/pages/index.vue';
+import { StateTree, ActionTree } from '@/store/module_mapper';
 import SearchBox from '@/components/organisms/shared/EmployeeSearchBox.vue';
 import List from '@/components/organisms/shared/EmployeeSearchResultSet.vue';
 
 const convertQueryParams = (
-  conditions: SearchEmployee.IState
+  conditions: StateTree['search/employee']
 ): { [P in keyof Required<QueryString>]: string | undefined } => ({
   group: conditions.group ? String(conditions.group) : undefined,
   branch: conditions.branch ? String(conditions.branch) : undefined,
@@ -29,14 +27,16 @@ const convertQueryParams = (
   },
 })
 class IndexTemplate extends Vue {
-  @Prop({ required: true, type: Object }) employee!: Employee.IState;
-  @Prop({ required: true, type: Object }) conditions!: SearchEmployee.IState;
-  @Prop({ required: true, type: Object }) employeeActions!: ActionTree<
-    Employee.IActions
-  >;
-  @Prop({ required: true, type: Object }) searchActions!: ActionTree<
-    SearchEmployee.IActions
-  >;
+  @Prop({ required: true, type: Object }) employee!: StateTree['employee'];
+  @Prop({ required: true, type: Object })
+  conditions!: StateTree['search/employee'];
+
+  @Prop({ required: true, type: Object })
+  employeeActions!: ActionTree['employee'];
+
+  @Prop({ required: true, type: Object })
+  searchActions!: ActionTree['search/employee'];
+
   @Prop({ required: true, type: Object }) dataSets!: DataSets;
 
   render() {
